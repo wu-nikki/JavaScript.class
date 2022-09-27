@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const rand = (min, max) => {
+      return Math.round(Math.random() * (max - min)) + min
+    }
+
+    const groupA = []
+
+    //1. // 取六顆個數字
+    // for (let i = 0; i < 6; i++) {
+    //   // 每次隨機一個數字
+    //   const num = rand(1, 38)
+    //   if (groupA.includes(num)) {
+    //     // 如果重複，迴圈再跑一次
+    //     i--
+    //   } else {
+    //     // 沒又有重複就放進陣列
+    //     groupA.push(num)
+    //   }
+    // }
+
+    //2. // 取滿六個數字為止
+    // while (groupA.length < 6) {
+    //   // 每次隨機一個數字
+    //   const num = rand(1, 38)
+    //   // 不重複就放進陣列
+    //   if (!groupA.includes(num)) {
+    //     groupA.push(num)
+    //   }
+    // }
+
+
+
+    // 3. 建立一個有38個數字的陣列
+    const numbers = []
+    for (let i = 1; i <= 38; i++) {
+      numbers.push(i)
+    }
+    // 取六個數字
+    for (let i = 0; i < 6; i++) {
+      // 每次隨機一個陣列索引
+      const index = rand(0, numbers.length - 1)
+      // 將取到的索引對應值放入群組
+      groupA.push(numbers[index])
+      // 將取到的索引從數字陣列移除
+      numbers.splice(index, 1)
+    }
+    document.write(groupA.join(','))
+    document.write('<br>')
+    document.write(rand(1, 8))
+
+
+  </script>
+</body>
+
+</html>
