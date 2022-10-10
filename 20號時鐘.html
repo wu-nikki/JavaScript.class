@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+    }
+
+
+
+    #clock {
+      background: rgb(200, 255, 255);
+      border: 1px solid rgba(0, 0, 50, 0.5);
+      width: 300px;
+      height: 300px;
+      margin: auto;
+      border-radius: 50%;
+      position: relative;
+      top: calc(50vh - 150px);
+      transition: 0.5s;
+
+    }
+
+    #clock:hover {
+      background: linear-gradient(180deg, rgba(0, 0, 50, 0.5), rgba(0, 0, 0, 0.5));
+      box-shadow:
+        0 0 10px rgba(255, 255, 120, 0.7),
+        0 0 50px rgba(255, 220, 120, 0.8),
+        0 0 100px rgba(100, 20, 120, 0.5),
+        0 0 180px rgba(0, 20, 150, 0.3);
+    }
+
+    #circle {
+      background: rgba(0, 0, 50);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      box-shadow:
+        0 0 10px rgba(200, 200, 50, 1),
+        0 0 50px rgba(200, 200, 50, 1);
+      position: absolute;
+      /* margin: 145px; */
+
+      top: calc(50% - 5px);
+      left: calc(50% - 5px);
+    }
+
+    #hour {
+      width: 20%;
+      height: 8px;
+      background: rgb(251, 208, 64);
+      box-shadow:
+        0 0 10px rgba(255, 255, 120, 1),
+        0 0 50px rgba(255, 255, 120, 0.5);
+      position: absolute;
+      top: calc(50% - 4px);
+      left: calc(50% - 4px);
+      border-radius: 5px;
+      transform-origin: left center;
+
+    }
+
+    #min {
+      width: 35%;
+      height: 6px;
+      background: rgb(39, 33, 42);
+      box-shadow:
+        0 0 10px rgb(100, 255, 255, 0.8),
+        0 0 50px rgba(200, 255, 255, 0.5);
+      position: absolute;
+      top: calc(50% - 3px);
+      left: calc(50% - 3px);
+      border-radius: 0px 3px 3px 0px;
+      transform-origin: left center;
+
+    }
+
+    #sec {
+      width: 45%;
+      height: 4px;
+      background: #9c2331;
+      box-shadow:
+        0 0 10px rgba(200, 255, 200, 1),
+        0 0 30px rgba(200, 200, 200, 0.8);
+      position: absolute;
+      top: calc(50% - 2px);
+      left: calc(50% - 2px);
+      border-radius: 0px 5px 5px 0px;
+      transform-origin: left center;
+    }
+
+    img {
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+    }
+  </style>
+</head>
+
+<body>
+
+  <img src="./Star.svg" alt="">
+  <div id="clock">
+
+    <div id="hour"></div>
+    <div id="min"></div>
+    <div id="sec"></div>
+    <div id="circle"></div>
+
+
+  </div>
+
+  <script>
+    const hour = document.getElementById('hour')
+    const min = document.getElementById('min')
+    const sec = document.getElementById('sec')
+
+    setInterval(() => {
+      const date = new Date()
+      hour.style.transform = `rotate(${date.getHours() * 30 - 90}deg)`
+      min.style.transform = `rotate(${date.getMinutes() * 6 - 90}deg)`
+      sec.style.transform = `rotate(${date.getSeconds() * 6 - 90}deg)`
+    }, 1000)
+
+  </script>
+
+
+</body>
+
+</html>
