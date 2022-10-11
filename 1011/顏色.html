@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #color {
+      width: 300px;
+      height: 300px;
+      border: 2px solid black;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+  <div id="color"></div>
+  紅色
+  <input type="range" class="range" min="0" max="255" value="0">
+  <span class="text">0</span>
+  <input type="button" value="隨機" class="random">
+  綠色
+  <input type="range" class="range" min="0" max="255" value="0">
+  <span class="text">0</span>
+  <input type="button" value="隨機" class="random">
+  藍色
+  <input type="range" class="range" min="0" max="255" value="0">
+  <span class="text">0</span>
+  <input type="button" value="隨機" class="random">
+  <script>
+    const color = document.getElementById('color')
+    const ranges = document.getElementsByClassName('range')
+    const texts = document.getElementsByClassName('text')
+    const randoms = document.getElementsByClassName('random')
+
+    let background = [0, 0, 0]
+
+    for (const i in ranges) {
+      ranges[i].oninput = () => {
+        background[i] = ranges[i].value
+        texts[i].innerText = ranges[i].value
+        color.style.background = `rgb(${background.join(',')})`
+      }
+    }
+
+    for (const i in randoms) {
+      randoms[i].onclick = () => {
+        const rand = Math.round(Math.random()*255)
+        background[i] = rand
+        texts[i].innerText = rand
+        ranges[i].value = rand
+        color.style.background = `rgb(${background.join(',')})`
+      }
+    }
+  </script>
+</body>
+</html>
