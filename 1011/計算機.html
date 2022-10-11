@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Audiowide&family=Indie+Flower&family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Audiowide', cursive;
+      position: relative;
+
+
+    }
+
+    .box {
+      width: 100vw;
+      height: 100vh;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 200, 0.3)),
+        url(./天空.jpg);
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+
+    table {
+      width: 180px;
+      height: 200px;
+      padding: 5px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 25px;
+      border: 1px double rgb(239, 234, 138);
+      border-spacing: 6px 3px;
+      background: linear-gradient(rgba(216, 112, 147, 0.8), rgba(216, 112, 147, 0.9));
+    }
+
+    td {
+      width: 30px;
+      height: 30px;
+      border: 3px double rgb(241, 173, 196);
+      text-align: center;
+      border-radius: 25px;
+      background: linear-gradient(190deg, rgba(241, 173, 196, 1), rgba(184, 70, 108, 0.7));
+    }
+
+    td:not(#text):hover {
+      background: linear-gradient(190deg, rgb(255, 255, 255), rgba(232, 191, 114, 0.7));
+      transform: scale(1.25);
+      color: rgba(255, 055, 025, 1);
+      text-shadow: 0 1px rgba(222, 233, 232, 0.65);
+      font-size: 20px;
+    }
+
+
+    .zero {
+      border: 3px ridge rgb(200, 32, 242);
+      background: linear-gradient(rgba(255, 255, 255, 1), rgba(205, 200, 200, 0.7));
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+
+    <table>
+
+
+
+      <tr>
+        <td colspan="4" id="text" class="zero">0</td>
+      </tr>
+      <tr>
+        <td>C</td>
+        <td>/</td>
+        <td>*</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+        <td rowspan="2">+</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td rowspan="2">=</td>
+      </tr>
+      <tr>
+        <td colspan="2">0</td>
+        <td>.</td>
+      </tr>
+    </table>
+  </div>
+
+  <script>
+    const text = document.getElementById('text')
+    const btns = document.querySelectorAll('td:not(#text)')
+
+    let reset = false;
+    for (const btn of btns) {
+      btn.onclick = () => {
+        const btnText = btn.innerText
+        if (btnText === '=') {
+          // eval()若字串是運算式,會執行出運算結果
+          // eval()可以是組合字串,數學運算式,單純字串等,若沒有填值會寫 undefined
+          text.innerText = eval(text.innerText)
+          reset = true;
+        } else if (btnText === 'C') {
+          text.innerText = '0'
+        } else {
+          if (text.innerText === '-' && isNaN(parseInt(btnText))) return
+          if (text.innerText !== '0' && !reset) {
+            text.innerText += btnText
+          } else if (!['+', '*', '/'].includes(btnText) || reset) {
+            text.innerText = btnText
+            reset = false
+          }
+        }
+      }
+    }
+
+    document.onkeydown = event => {
+      const btnText = event.key
+      if (btnText === 'Enter' || btnText === '=') {
+        text.innerText = eval(text.innerText)
+        reset = true;
+      } else if (btnText === 'C') {
+        text.innerText = '0'
+      } else {
+        if (text.innerText === '-' && isNaN(parseInt(btnText))) return
+
+        if (text.innerText !== '0' && !reset) {
+          text.innerText += btnText
+        } else if (!['+', '*', '/'].includes(btnText) || reset) {
+          text.innerText = btnText
+          reset = false
+
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
