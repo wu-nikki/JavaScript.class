@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* 7 */
+    .bg-black {
+      background-color: black;
+    }
+
+    .text-white {
+      color: aliceblue;
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- 1 -->
+  <h1 id="title">標題</h1>
+
+  <!-- 2  3 -->
+
+  <p class="description">123</p>
+  <p class="description">789</p>
+
+  <!-- 4 -->
+  <div id="img">
+    <i>圖片</i>
+  </div>
+
+  <!-- 5 -->
+  <a id="link" href="https://google.com">google</a>
+
+  <!-- 6 -->
+  <p class="text-red">123</p>
+  <p class="text-red">789</p>
+
+  <!-- 7 -->
+  <h2>23</h2>
+  <h2>56</h2>
+
+
+
+
+
+  <script src="./jquery-3.6.1.min.js"></script>
+  <script>
+
+    // 1
+    // $(CSS選擇器).text()
+    // ()裡面沒東西是取值，有東西是改值
+    // $('#title').text()
+
+    console.log($('#title').text())
+    $('#title').text('早')
+    console.log($('title').text())
+
+    // 2
+    // 如果選擇器選中多個元素，取值會把全部連在一起，改值會全部一起改
+    console.log($('.description').text())
+    $('.description').text('AAA')
+    console.log($('.description').text())
+
+    // 3
+    // JQ 用 .eq()指定第幾個並直接改值
+    $('.description').eq(0).text('BBB')
+
+
+    // 4
+    // $(CSS選擇器).html()
+    // ()沒東西就把所有取下來 ，+.trim() 就會省略空白， 有東西是改值
+    console.log($('#img').html());
+    $('#img').html('<img src="https://github.com/wu-nikki.png" width= "200" > ')
+    console.log($('#img').html());
+
+    // 5
+    // $(CSS選擇器).attr(屬性) -->取屬性值
+    //  $(CSS選擇器).attr(屬性, 值) -->改屬性值
+    console.log($('#link').attr('href'))
+    $('#link').attr('href', 'https://fb.com')
+    $('#link').text('FB')
+    console.log($('#link').attr('href'))
+
+    //6 
+    // $(CSS選擇器).css(樣式,值) -->取樣式值
+    // $(CSS選擇器).css({樣式,值}) -->改樣式值
+    // $('.text-red').css('color', 'red')
+    // $('.text-red').css('font-size','50px')
+    // $('.text-red').css('font-weight','bold')
+    // 'font-size' 有特殊符號要加單引號 ，改成 fontSize 就不用加單引號
+    $('.text-red').css({ color: 'red', 'font-size': '50px', 'font-weight': 'bolder' })
+    console.log($('.text-red').css('color'))
+
+    // 7
+    // $(CSS選擇器).addClass(class名 空白分隔) -->加class
+    // $(CSS選擇器).removeClass(class名 空白分隔) -->移除class
+    // $(CSS選擇器).hasClass(class名 空白分隔) -->有沒有class
+
+    // $(CSS選擇器).toggleClass(class名 空白分隔) -->開關class
+    $('h2').addClass('text-white bg-black')
+    $('h2').eq(0).removeClass('bg-black')
+    console.log($('h2').eq(0).hasClass('bg-black') ? '黑' : '白')
+
+    $('h2').eq(1).toggleClass('bg-black') //把背景色關掉
+    $('h2').eq(0).toggleClass('bg-black') //把背景色打開
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>

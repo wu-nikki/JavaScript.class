@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>更換照片</title>
+  <style>
+    .img {
+      width: 300px;
+      height: 200px;
+
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <input type="button" value="換照片" id="btn">
+  <br>
+
+  <img id="img" src="./01.jpg">
+
+
+
+
+
+
+
+  <script src="./jquery-3.6.1.min.js"></script>
+  <script>
+    $('#btn').click(function () {
+      if ($('#img').attr('src').includes('01')) {
+        $('#img').attr('src', './02.jpg')
+      } else {
+        $('#img').attr('src', './01.jpg')
+      }
+
+    })
+
+
+
+
+  </script>
+
+</body>
+
+</html>

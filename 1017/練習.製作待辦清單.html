@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>待辦清單</title>
+</head>
+
+<body>
+  <div id="list">
+    <input type="text" id="text">
+
+    <input type="button" value="新增" id="input">
+
+    <ul></ul>
+  </div>
+
+  <!--  <form action="" id="form">
+    <input type="text" id="input">
+    <input type="submit" id="btn" value="新增">
+  </form>
+  <ul id="list"></ul> -->
+
+
+  <script src="./jquery-3.6.1.min.js"></script>
+  <script>
+
+    $('#input').click(function (event) {
+      const ul = $(this).siblings('ul')
+      const text = $('#text')
+      ul.append(`<li> ${text.val()}<input type="button" value="刪除" class="del" </li>`)
+
+      // 可以讓輸入欄位保持空白狀態
+      text.val('')
+    })
+
+    //刪除鍵發揮功能:
+    // .on(事件名稱, 過濾選擇器, function(event){
+    // $(this) 指的是觸發事件的元素
+    // })
+    $('#list').on('click', '.del', function () {
+      $(this).parent().remove()
+    })
+
+
+
+    // function add() {
+    //   const input = $('#input')
+    //   if (input.val().length === 0) return
+
+    //   $('#list').append(`< li > ${ input.val() } < input type = 'button' value = 'x' class= 'del'</li >`)
+
+    //   input.val('')
+    // }
+
+    // $('#btn').click(add)
+    // $('#list').on('click', '.del', function () {
+    //   $(this).parent().remove()
+    // })
+
+
+      // 如果用form的話，網頁會跳轉
+    // $('form').submit(function(e){
+    //   e.preventDefault()
+    //   add()
+    // })
+
+
+
+
+
+
+  </script>
+
+
+</body>
+
+</html>

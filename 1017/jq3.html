@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+
+<body>
+  <!-- 1 -->
+  <div id="list">
+    <input type="button" value="點">
+    <ul>
+      <li>1</li>
+    </ul>
+  </div>
+  <!-- 2 -->
+  <input type="text" name="" id="text-input">
+  <p id="text"></p>
+
+
+  <!-- 3 -->
+  <div id="btngroup">
+    <input type="button" value="點點">
+  </div>
+
+
+  <script src="./jquery-3.6.1.min.js"></script>
+  <script>
+    // 1
+    // .click(function (event){
+    // $(this) 指的是觸發事件的元素
+    // })
+    $('#list input[type=button]').click(function (event) {
+      // .siblings()同一層其他所有,()可以放選擇器過濾
+      const ul = $(this).siblings('ul')
+      // .prepend() 在裡面的元素前面
+      // .append() 在裡面的元素後面
+      ul.prepend('<li>前面新的</li>')
+      ul.append('<li>後面新的</li>')
+
+
+      // .insertBefore() 外面的前面放新的
+      // .insertAfter() 外面的後面放新的
+      // ()放HTML文字 是新增，放取到的元素是移動位置
+      $('<p>外面的前面放新的</p>').insertBefore(ul)
+      $('<p>外面的後面放新的</p>').insertAfter(ul)
+      // 會使html的<p id="text"></p> 移動ul後面
+      $($('#text')).insertAfter(ul)
+    })
+
+    // 2
+    // .on(事件名稱,function(event){
+    // $(this) 指的是觸發事件的元素
+    // })
+    $('#text-input').on('input', function () {
+      // .val()輸入欄位的value
+      // ()沒東西是取值,有東西是改值
+      $('#text').text($(this).val())
+    })
+
+    // 3 
+    // 使用.on(事件名稱,過濾選擇器,function(event){
+    // $(this) 指的是觸發事件的元素
+    // })
+
+    $('#btngroup').on('click', 'input', function (event) {
+      $('#btngroup').append('<input type="button" value="點點">')
+    })
+
+
+// 只有第一個可以點，新增的按鈕無效
+    // $('#btngroup input').click(function () {
+    //   $('#btngroup').append('<input type="button" value="點點">')
+    // })
+
+
+  </script>
+
+
+</body>
+
+</html>
