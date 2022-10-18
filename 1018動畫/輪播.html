@@ -59,6 +59,7 @@
       if (now + 1 < total) {
         now++
         const left = now * 400 * -1
+        // 增加.stop(true,true) 可停止動畫,以防有卡頓感
         $('#imgs').stop(true, true).animate({ left: left - 25 + 'px' }).animate({ left: left + 'px' })
       }
     })
