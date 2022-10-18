@@ -6,10 +6,42 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    #gallery {
+      width: 400px;
+      height: 300px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #imgs {
+      position: absolute;
+    }
+
+    img {
+      float: left;
+      width: 400px;
+      height: 300px;
+    }
+  </style>
 
 </head>
 
 <body>
+
+  <div id="gallery">
+    <div id="imgs">
+      <img src="./0551.jpg" alt="">
+      <img src="./0552.jpg" alt="">
+      <img src="./0553.jpg" alt="">
+      <img src="./0554.jpg" alt="">
+      <img src="./0555.jpg" alt="">
+    </div>
+  </div>
+  <input type="button" value="&gt;" id="btn-left">
+  <input type="button" value="&lt;" id="btn-right">
+
+
 
   <script src="./jquery-3.6.1.min.js"></script>
 </body>
