@@ -45,7 +45,12 @@
   <input type="button" value="開始" id="btn-start">
 
   <script src="./jquery-3.6.1.min.js"></script>
+  <!--  -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!--  -->
+
+
   <script>
     // 分數
     let score = 0
@@ -120,21 +125,46 @@
 
           $('#btn-start').attr('disabled', false)
 
-
+          // 結束後彈跳出的視窗
+          Swal.fire({
+            icon: 'info',
+            title: '時間到',
+            text: `你得到${score}分`
+          })
 
 
           if (score > highscore.score) {
-            highscore.score = score
-            highscore.name = prompt('最高分，請輸入名字')
-            $('#text-highscorename').text(highscore.name)
-            $('#text-highscore').text(highscore.score)
-            // 存在localStorage   JSON.stringify()轉成文字串來放
-            // 1. 
-            // localStorage.setItem('zombiegame', JSON.stringify(highscore))
 
-            // 2.
-            localStorage.zombiegame = JSON.stringify(highscore)
+            Swal.fire({
+              icon: 'info',
+              title: '時間到',
+              text: `最高分，你得到${score}分`,
+              inputPlaceholder: '請輸入名字',
+              input: 'text',
+              inputAttributes: {
+                // 使輸入欄位變成必填
+                required: true
+              }
+              , validationMessage: '名稱必填', //沒填名稱就跳出這個
 
+              allowOutsideClick: false,  //不給點旁邊關閉
+              allowEscapeKey: false //不給點esc關閉
+            }).then(result => {
+              highscore.score = score
+              // 原本是跳出prompt 來填名字 
+              // highscore.name = prompt('最高分，請輸入名字')
+              // 但現在已經有Swal.fire  所以改成  
+              highscore.name = result.value
+
+              $('#text-highscorename').text(highscore.name)
+              $('#text-highscore').text(highscore.score)
+              // 存在localStorage   JSON.stringify() 把變數轉成文字串來放
+              // 1. 
+              // localStorage.setItem('zombiegame', JSON.stringify(highscore))
+
+              // 2.
+              localStorage.zombiegame = JSON.stringify(highscore)
+            })
 
           }
         }
