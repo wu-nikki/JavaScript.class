@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #imgs {
+      height: 100px;
+      overflow: hidden;
+    }
+
+    img {
+      float: left;
+      /* 使用 margin-top 把圖片往下推*/
+      margin-top: 50px;
+      height: 100px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+
+  <div id="imgs">
+    <img src="./0551.jpg" alt="">
+    <img src="./0552.jpg" alt="">
+    <img src="./0553.jpg" alt="">
+    <img src="./0554.jpg" alt="">
+    <img src="./0555.jpg" alt="">
+  </div>
+
+
+  <script src="./jquery-3.6.1.min.js"></script>
+  <script>
+
+    // .hover(滑鼠移入時，滑鼠移出時)
+    // .hover(mouseenter,mouseout)
+    // 要增加.stop 在animate前面  去停止前面圖片的動畫 
+    $('img').hover(function () {
+      $(this).stop().animate({ marginTop: 0 })
+      $(this).prev().stop().animate({ marginTop: 25 })
+      $(this).next().stop().animate({ marginTop: 25 })
+    }, function () {
+      $('img').stop().animate({ marginTop: 50 })
+    })
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>
