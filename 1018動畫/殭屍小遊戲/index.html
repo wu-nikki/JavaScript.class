@@ -100,6 +100,10 @@
         if (countdown === 0) {
           // 停止倒數
           clearInterval(timer)
+
+          // 清空
+          $('#game img').remove()
+
           // 重新啟用開始按鈕
           console.log(this)
           $('#btn-start').attr('disabled', false)
@@ -111,6 +115,14 @@
 
     })
 
+    // 設定 當發生 點擊殭屍 後 計分
+    $('#game').on('click', '.zombie', function () {
+      $(this).attr('src', './blood.png')
+      $(this).removeClass('zombie').addClass('blood.png')
+      $(this).stop()
+      score++
+      $('#text-score').text(score)
+    })
 
 
 
