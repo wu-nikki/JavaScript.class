@@ -33,6 +33,11 @@
       /* 忽略點擊事件 */
       pointer-events: none;
     }
+
+    /* 視窗icon的字體 */
+    .swal2-icon-content {
+      font-family: 'Montserrat';
+    }
   </style>
 
 </head>
@@ -40,19 +45,17 @@
 <body>
   <p>分數: <span id="text-score">0</span>分</p>
   <p>剩餘: <span id="text-time">0</span>秒</p>
-  <p>最高分玩家: <span id="text-highscorename">沒有</span></p>
-  <p style="font-size: 30px;">最高分: <span id="text-highscore">0</span>分</p>
+  <p style="font-size: 20px;">最高分玩家: <span id=" text-highscorename">沒有</span></p>
+  <p style="font-size: 20px;">最高分: <span id="text-highscore">0</span>分</p>
   <hr>
   <div id="game"></div>
   <br>
   <input type="button" value="開始" id="btn-start">
 
   <script src="./jquery-3.6.1.min.js"></script>
-  <!--  -->
+
+  <!-- 跳出視窗的檔案連結 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <!--  -->
-
 
   <script>
     // 分數
@@ -128,16 +131,8 @@
 
           $('#btn-start').attr('disabled', false)
 
-          // 結束後彈跳出的視窗
-          Swal.fire({
-            icon: 'info',
-            title: '時間到',
-            text: `你得到${score}分`
-          })
-
-
           if (score > highscore.score) {
-
+            // 結束後彈跳出的視窗
             Swal.fire({
               icon: 'info',
               title: '時間到',
@@ -169,6 +164,12 @@
               localStorage.zombiegame = JSON.stringify(highscore)
             })
 
+          } else {
+            Swal.fire({
+              icon: 'info',
+              title: '時間到',
+              text: `你得到${score}分`
+            })
           }
         }
 
