@@ -37,6 +37,7 @@
 <body>
   <p>分數: <span id="text-score">0</span>分</p>
   <p>剩餘: <span id="text-time">0</span>秒</p>
+  <p>最高分玩家: <span id="text-highscorename">沒有</span></p>
   <p style="font-size: 30px;">最高分: <span id="text-highscore">0</span>分</p>
   <hr>
   <div id="game"></div>
@@ -44,6 +45,7 @@
   <input type="button" value="開始" id="btn-start">
 
   <script src="./jquery-3.6.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     // 分數
     let score = 0
@@ -51,6 +53,13 @@
     let countdown = 0
     // 計時器
     let timer = 0
+
+    // 最高分
+    // const storage=JSON.parse(localStorage.getItem('zombiegame'))
+    const highscore = localStorage.zombiegame ? JSON.parse(localStorage.zombiegame) : { name: '', score: 0 }
+    $('#text-highscorename').text(highscore.name)
+    $('#text-highscore').text(highscore.score)
+
 
     // 設定移動
     function move(zombie) {
@@ -108,9 +117,26 @@
           $('#game img').remove()
 
           // 重新啟用開始按鈕
-          console.log(this)
+
           $('#btn-start').attr('disabled', false)
 
+
+
+
+          if (score > highscore.score) {
+            highscore.score = score
+            highscore.name = prompt('最高分，請輸入名字')
+            $('#text-highscorename').text(highscore.name)
+            $('#text-highscore').text(highscore.score)
+            // 存在localStorage   JSON.stringify()轉成文字串來放
+            // 1. 
+            // localStorage.setItem('zombiegame', JSON.stringify(highscore))
+
+            // 2.
+            localStorage.zombiegame = JSON.stringify(highscore)
+
+
+          }
         }
 
       }, 1000)
