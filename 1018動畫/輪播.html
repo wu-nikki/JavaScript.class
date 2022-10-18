@@ -19,6 +19,7 @@
     }
 
     img {
+      /* 並排 */
       float: left;
       width: 400px;
       height: 300px;
@@ -38,12 +39,54 @@
       <img src="./0555.jpg" alt="">
     </div>
   </div>
-  <input type="button" value="&gt;" id="btn-left">
-  <input type="button" value="&lt;" id="btn-right">
+
+  <input type="button" value="&lt;" id="btn-left">
+  <input type="button" value="&gt;" id="btn-right">
 
 
 
   <script src="./jquery-3.6.1.min.js"></script>
+
+  <script>
+    let now = 0
+    const total = $('img').length
+    // 用.css是方便以後加減圖片
+    $('#imgs').css('width', total * 400 + 'px')
+
+    // 按往右按鈕
+    $('#btn-right').click(function () {
+      // 當現在張數+1小於總張數 就翻頁 (以防跑版)
+      if (now + 1 < total) {
+        now++
+        const left = now * 400 * -1
+        $('#imgs').animate({ left: left + 'px' })
+      }
+    })
+
+    // 按往左按鈕
+    $('#btn-left').click(function () {
+      //1. 當現在張數的索引-1 大於等於0 就翻頁
+      // if(now-1>=0)
+      //2.當現在張數大於總張數 就翻頁 (以防跑版)
+      if (now > 0) {
+        now--
+        const left = now * 400 * -1
+        $('#imgs').animate({ left: left + 'px' })
+      }
+    })
+
+
+
+
+
+
+
+
+
+  </script>
+
+
+
 </body>
 
 </html>
