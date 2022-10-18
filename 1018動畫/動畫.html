@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  img {
+    position: relative;
+  }
+</style>
+
+<body>
+  <!-- 1 -->
+  <input type="button" value="變大" id="btn1">
+  <!-- 2 -->
+  <input type="button" value="移動" id="btn2">
+
+  <hr>
+  <img src="https://github.com/wu-nikki.png" id="img" width="100" height="100">
+
+
+  <script src="./jquery-3.6.1.min.js"></script>
+  <script>
+
+    // 1
+    $('#btn1').click(function () {
+      // .animate({樣式:值},動畫時間,funtion(){})
+      // 時間可設定毫秒，fast,slow
+      // 只能修改數字型態的css樣式
+      // 值可以直接指定或是相對+-
+      $('#img').animate({
+        width: '500px',
+        height: '500px'
+      }, 'slow', function () {
+        console.log('變大了')
+      })
+    })
+
+    // 2
+    $('#btn2').click(function () {
+      $('#img').animate({
+        top: '+=50px',
+        left: '+=50px'
+      }, 1000, function () {
+        console.log('移動了~')
+      })
+    })
+
+
+
+  </script>
+</body>
+
+</html>
