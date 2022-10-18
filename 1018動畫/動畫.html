@@ -19,6 +19,39 @@
   <!-- 2 -->
   <input type="button" value="移動" id="btn2">
 
+
+  <!-- 3 -->
+  <input type="button" value="多功能移動" id="btn3">
+  <!-- 4 -->
+  <input type="button" value="停止" id="btn4">
+
+
+  <!-- 5 -->
+  <input type="button" value="淡入" id="btn5">
+  <!-- 6 -->
+  <input type="button" value="淡出" id="btn6">
+
+
+  <!-- 7 -->
+  <input type="button" value="半透明" id="btn7">
+
+  <!-- 8 -->
+  <input type="button" value="重設" id="btn8">
+
+
+  <!-- 9 -->
+  <input type="button" value="滑入" id="btn9">
+  <!-- 10 -->
+  <input type="button" value="滑出" id="btn10">
+
+
+  <!-- 11 -->
+  <input type="button" value="切換淡入淡出" id="btn11">
+  <!-- 12 -->
+  <input type="button" value="切換滑入滑出" id="btn12">
+
+
+
   <hr>
   <img src="https://github.com/wu-nikki.png" id="img" width="100" height="100">
 
@@ -26,7 +59,7 @@
   <script src="./jquery-3.6.1.min.js"></script>
   <script>
 
-    // 1
+    // 1 變大 ----------------------------------------
     $('#btn1').click(function () {
       // .animate({樣式:值},動畫時間,funtion(){})
       // 時間可設定毫秒，fast,slow
@@ -40,7 +73,7 @@
       })
     })
 
-    // 2
+    // 2 移動 ----------------------------------------
     $('#btn2').click(function () {
       $('#img').animate({
         top: '+=50px',
@@ -48,6 +81,80 @@
       }, 1000, function () {
         console.log('移動了~')
       })
+    })
+
+    // 3 多功能移動 ------------------------------------
+    $('#btn3').click(function () {
+      $('#img').animate({
+        top: '+=60px',
+      }, 1000, function () {
+        console.log('往下移動~')
+      }).animate({
+        left: '+=100px'
+      }, 2000, 'linear', function () {
+        console.log('往右囉')
+      })
+    })
+
+
+    // 4 停止 ----------------------------------------
+    $('#btn4').click(function () {
+      // .stop(是否停止之後的動畫，是否跳到幕前動畫結束)
+      // 不懂會在哪廷的話 可以看console.log 裡面的數值
+      // 如果第二個設定 true，第一個必須是true
+      $('#img').stop(true, true)
+    })
+
+    // 5 淡入 ----------------------------------------
+    $('#btn5').click(function () {
+      // .fadeIn(時間,function)
+      $('#img').fadeIn()
+    })
+
+    // 6 淡出 ----------------------------------------
+    $('#btn6').click(function () {
+      // .fadeOut(時間,function)
+      // 淡出後會有 display:none
+      $('#img').fadeOut()
+    })
+
+
+    // 7 半透明 ---------------------------------------
+    $('#btn7').click(function () {
+      // .fadeTo(時間,function)
+      $('#img').fadeTo(1000, 0.5)
+    })
+
+    // 8 重設 ----------------------------------------
+    $('#btn8').click(function () {
+      // .removeAttr() ，會把()裡面的東西移除
+      $('#img').stop(true, true).removeAttr('style')
+    })
+
+    // 9 滑入 ----------------------------------------
+    $('#btn9').click(function () {
+      // .slideDown(時間,function)
+      $('#img').slideDown(1000)
+    })
+
+    // 10 滑出 ---------------------------------------
+    $('#btn10').click(function () {
+      // .slideUp(時間,function)
+      // 調整高度到 0 後 display none
+      $('#img').slideUp(1000)
+    })
+
+    // 11 切換淡入淡出 ---------------------------------
+    $('#btn11').click(function () {
+      // .fadeToggle(時間,function)
+      $('#img').fadeToggle(1000)
+    })
+
+    // 12 切換滑入滑出 ---------------------------------
+    $('#btn12').click(function () {
+      // .slideToggle(時間,function)
+
+      $('#img').slideToggle(1000)
     })
 
 
