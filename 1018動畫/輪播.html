@@ -59,7 +59,7 @@
       if (now + 1 < total) {
         now++
         const left = now * 400 * -1
-        $('#imgs').animate({ left: left + 'px' })
+        $('#imgs').stop(true, true).animate({ left: left - 25 + 'px' }).animate({ left: left + 'px' })
       }
     })
 
@@ -71,7 +71,7 @@
       if (now > 0) {
         now--
         const left = now * 400 * -1
-        $('#imgs').animate({ left: left + 'px' })
+        $('#imgs').stop(true, true).animate({ left: left + 25 + 'px' }).animate({ left: left + 'px' })
       }
     })
 
