@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .card {
+      width: 50px;
+      height: 90px;
+      position: relative;
+      float: left;
+      margin: 10px;
+      transition: transform 1s;
+      /* 設定子元素在3d空間內 */
+      transform-style: preserve-3d;
+    }
+
+    .card-front {
+      width: 100%;
+      height: 100%;
+      background-image: url(./撲克牌/1H.jpg);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      /* 設定隱藏背面 */
+      backface-visibility: hidden;
+    }
+
+    .card-back {
+      width: 100%;
+      height: 100%;
+      background-image: url(./撲克牌/Red_back.jpg);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: absolute;
+      transform: rotateY(180deg);
+      /* 設定隱藏背面 */
+      backface-visibility: hidden;
+    }
+
+    .card-close {
+      transform: rotateY(180deg);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="card-front"></div>
+    <div class="card-back"></div>
+  </div>
+
+
+  <script src="./jquery-3.6.1.min.js"></script>
+
+
+
+
+</body>
+
+</html>
