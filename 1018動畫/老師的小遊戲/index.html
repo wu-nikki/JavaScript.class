@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <title>Document</title>
+  <style>
+    #game {
+      width: 500px;
+      height: 500px;
+      background: black;
+      overflow: hidden;
+      position: relative;
+      cursor: url(./cursor.png) 50 50, auto;
+    }
+
+    img {
+      height: 150px;
+      position: absolute;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .blood {
+      /* 忽略點擊事件 */
+      pointer-events: none;
+    }
+
+    .swal2-icon-content {
+      font-family: 'Montserrat';
+    }
+  </style>
+</head>
+
+<body>
+  <input type="button" value="開始" id="btn-start">
+  <br>
+  <p>分數: <span id="text-score">0</span> 分</p>
+  <p>剩餘: <span id="text-time">0</span> 秒</p>
+  <p>最高玩家: <span id="text-highscorename">沒有</span></p>
+  <p>最高分: <span id="text-highscore">0</span> 分</p>
+  <hr>
+  <div id="game"></div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js'
+    integrity='sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=='
+    crossorigin='anonymous'></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    // 分數
+    let score = 0
+    // 剩餘秒數
+    let countdown = 0
+    // 計時器
+    let timer = 0
+    // 最高分
+    // const storage = JSON.parse(localStorage.getItem('zombiegame'))
+    const highscore = localStorage.zombiegame ? JSON.parse(localStorage.zombiegame) : { name: '', score: 0 }
+    $('#text-highscorename').text(highscore.name)
+    $('#text-highscore').text(highscore.score)
+
+    // 移動
+    function move(zombie) {
+      const top = Math.round(Math.random() * 100) + '%'
+      const left = Math.round(Math.random() * 100) + '%'
+      zombie.stop().animate({ top, left }, 2000, function () {
+        if ($('#btn-start').attr('disabled') === 'disabled') {
+          move(zombie)
+        }
+      })
+    }
+
+    $('#btn-start').click(function () {
+      // 停用開始按鈕
+      $(this).attr('disabled', true)
+      // 重設
+      score = 0
+      $('#text-score').text(score)
+      countdown = 5
+      $('#text-time').text(countdown)
+      // 開始遊戲
+      timer = setInterval(function () {
+        // 倒數
+        countdown--
+        $('#text-time').text(countdown)
+
+        const random = Math.ceil(Math.random() * 10)
+        if (random > 5 && $('.zombie').length < 5) {
+          const top = Math.round(Math.random() * 100) + '%'
+          const left = Math.round(Math.random() * 100) + '%'
+          const zombie = $(`<img src="./1.gif" class="zombie" style="top: ${top}; left: ${left}">`)
+          $('#game').append(zombie)
+          move(zombie)
+        }
+
+        // 時間到
+        if (countdown === 0) {
+          // 停止倒數
+          clearInterval(timer)
+          // 清空
+          $('#game img').remove()
+          // 重新啟用開始按鈕
+          $('#btn-start').attr('disabled', false)
+
+          if (score > highscore.score) {
+            Swal.fire({
+              icon: 'info',
+              title: '時間到',
+              text: `最高分，你得到 ${score} 分`,
+              inputPlaceholder: '請輸入名字',
+              input: 'text',
+              inputAttributes: {
+                required: true
+              },
+              validationMessage: '名稱必填',
+              allowOutsideClick: false,
+              allowEscapeKey: false
+            }).then(result => {
+              highscore.score = score
+              highscore.name = result.value
+              $('#text-highscorename').text(highscore.name)
+              $('#text-highscore').text(highscore.score)
+
+              // localStorage.setItem('zombiegame', JSON.stringify(highscore))
+              localStorage.zombiegame = JSON.stringify(highscore)
+            })
+          } else {
+            Swal.fire({
+              icon: 'info',
+              title: '時間到',
+              text: `你得到 ${score} 分`
+            })
+          }
+        }
+      }, 1000)
+    })
+
+    $('#game').on('click', '.zombie', function () {
+      $(this).attr('src', './blood.png')
+      $(this).removeClass('zombie').addClass('blood')
+      $(this).stop()
+      score++
+      $('#text-score').text(score)
+    })
+  </script>
+</body>
+
+</html>
