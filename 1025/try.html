@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+</head>
+
+<body>
+  <script>
+    try {
+      alertt(123) //第一行出現錯誤就會直接跑到catch
+      console.log('abc')//所以這行不會執行
+    } catch (error) {
+      console.log(error);  //ReferenceError: alertt is not defined
+      console.log(error.name)  //ReferenceError
+      console.log(error.message); //alertt is not defined
+
+    }
+
+
+
+    console.log('結束');
+
+  </script>
+
+
+
+
+</body>
+
+</html>

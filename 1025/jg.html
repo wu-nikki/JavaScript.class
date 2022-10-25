@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="./jquery-3.6.1.min.js"></script>
+  <script>
+    // $.get(url,成功時的function,回來的資料型態)
+    $.get('https://kktix.com/events.json', function (data) {
+      console.log(data.title)
+    }, 'json')
+
+
+    $.ajax({
+      url: 'https://kktix.com/events.json',
+      method: 'get',
+      // 回來的資料型態
+      dataType: 'json',
+      success(data) {
+        console.log(data.title)
+      }, error(xhr, textStatus, error) {
+        // jq包裝後的xhr物件
+        console.log(xhr)
+        // 文字的錯誤狀態，可能是error、timeout、abort等
+        console.log(textStatus)
+        // 回傳的錯誤
+        console.log(error)
+      }
+    })
+
+
+
+
+  </script>
+</body>
+
+</html>

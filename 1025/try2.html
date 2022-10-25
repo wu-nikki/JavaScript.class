@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const validate = input => {
+      let ok = false
+
+      try {
+        if (input === undefined || input === null) throw new Error('沒有輸入內容')
+        else if (typeof input !== 'number') throw new Error('必須是數字')
+        else if (input < 0) throw new Error('必須大於0')
+        else if (input >= 10) throw new Error('必須小於10')
+        console.log('驗證成功')
+        ok = true
+      } catch (error) {
+        console.log(error);
+        console.log(error.name)
+        console.log(error.message);
+      }
+      return ok
+    }
+
+    validate() //validate呼叫函式
+    console.log('- - -');
+
+    validate(0)
+    console.log('- - -');
+
+    validate(10)
+    console.log('- - -');
+
+    validate('aaa')
+    console.log('- - -');
+
+    validate(8)
+
+  </script>
+
+
+</body>
+
+</html>

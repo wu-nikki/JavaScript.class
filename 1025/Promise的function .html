@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+
+</head>
+
+<body>
+  <script>
+
+    const pass = confirm('你通過丙級了嗎')
+
+    const willEatPizza = pass => {
+      return new Promise((resolve, reject) => {
+        if (pass) resolve('恭喜')
+        else reject(new Error('QQ'))
+      })
+    }
+
+    willEatPizza(pass)
+      // Promise 成功時執行.then()
+      .then(result => {
+        console.log(result)
+      })
+      // Promise 失敗時執行.catch()
+      .catch(error => {
+        console.log(error)
+      })
+      // Promise 成功失敗都執行.finally()
+      .finally(() => {
+        console.log('Promise 結束');
+      })
+
+
+
+    // const willEatPizza = new Promise((resolve, reject) => {
+    //   if (pass) {
+    //     resolve('恭喜')
+    //   } else {
+    //     reject(new Error('QQ'))
+    //   }
+    // })
+
+    // willEatPizza
+    //   // Promise 成功時執行.then()
+    //   .then(result => {
+    //     console.log(result)
+    //   })
+    //   //Promise 失敗時執行.catch()
+    //   .catch(error => {
+    //     console.log(error)
+    //   })
+    //   // Promise 成功失敗都執行.finally()
+    //   .finally(() => {
+    //     console.log('Promise 結束');
+    //   })
+
+  </script>
+
+
+</body>
+
+</html>
