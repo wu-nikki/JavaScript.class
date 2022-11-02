@@ -1,11 +1,13 @@
 
 import 'dotenv/config'
 import linebot from 'linebot'
-// import axios from 'axios'
-// import flex from './flex.js'
+import axios from 'axios'
+import flex from './flex.js'
 // import { scheduleJob } from 'node-schedule'
 // import fetchCourse from './common/fetchCourse.js'
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
+
+// 關閉 https 驗證檢查
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 
 const bot = linebot({
   channelId: process.env.CHANNEL_ID,
@@ -23,8 +25,65 @@ const bot = linebot({
 // }
 // ans()
 
-// 先做請求再從迴圈拉資料 (用定時器更新)
-// node-schedule
+// 老師1號打的
+bot.on('message', async (event) => {
+  if (event.message.type === 'text') {
+    try {
+      const { data } = await axios.get('https://apiservice.mol.gov.tw/OdService/download/A17000000J-000007-DR7')
+      // const course = data.find(courses => {
+      //   return courses.BCM_SNO === event.message.text
+      // })
+      const course = data.find(courses => courses.BCM_SNO === event.message.text)
+      if (course) {
+        // 複製模板
+        const replyFlex = JSON.parse(JSON.stringify(flex))
+        // 修改內容
+        replyFlex.body.contents[0].text = course.CLASSNAME
+        replyFlex.body.contents.push({
+          type: 'box',
+          layout: 'vertical',
+          margin: 'lg',
+          spacing: 'sm',
+          contents: [
+            {
+              type: 'box',
+              layout: 'baseline',
+              spacing: 'sm',
+              contents: [
+                {
+                  type: 'text',
+                  text: '訓練時間',
+                  color: '#aaaaaa',
+                  size: 'sm',
+                  flex: 1
+                },
+                {
+                  type: 'text',
+                  text: course.TRAINING_PERIOD,
+                  wrap: true,
+                  color: '#666666',
+                  size: 'sm',
+                  flex: 5
+                }
+              ]
+            }
+          ]
+        })
+        replyFlex.footer.contents[0].action.uri = course.URL
+        event.reply({
+          type: 'flex',
+          altText: '查詢結果',
+          contents: replyFlex
+        })
+      } else {
+        event.reply('找不到課程')
+      }
+    } catch (error) {
+      console.log(error)
+      event.reply('發生錯誤，請稍後再試')
+    }
+  }
+})
 
 // bot.on('message', async (event) => {
 //   if (event.message.type === 'text') {
