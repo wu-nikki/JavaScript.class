@@ -1,9 +1,9 @@
 
 import 'dotenv/config'
 import linebot from 'linebot'
-import axios from 'axios'
-import flex from './flex.js'
-import { scheduleJob } from 'node-schedule'
+// import axios from 'axios'
+// import flex from './flex.js'
+// import { scheduleJob } from 'node-schedule'
 // import fetchCourse from './common/fetchCourse.js'
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0
 
@@ -13,15 +13,15 @@ const bot = linebot({
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 })
 
-const ans = async () => {
-  const { data } = await axios.get('https://gis.taiwan.net.tw/XMLReleaseALL_public/scenic_spot_C_f.json')
-  const list = data.XML_Head.Infos.Info
-  const region = list.find((course) => {
-    return course.Region === '桃園市'
-  })
-  console.log(region)
-}
-ans()
+// const ans = async () => {
+//   const { data } = await axios.get('https://gis.taiwan.net.tw/XMLReleaseALL_public/scenic_spot_C_f.json')
+//   const list = data.XML_Head.Infos.Info
+//   const region = list.find((course) => {
+//     return course.Region === '桃園市'
+//   })
+//   console.log(region)
+// }
+// ans()
 
 // 先做請求再從迴圈拉資料 (用定時器更新)
 // node-schedule
