@@ -1,7 +1,7 @@
 export const animals = ['dog', 'cat', 'bird']
-export const fruits = ['apple', 'banana', 'orange']
+export const fruits = ['apple', 'banana']
 
-const vegetables = ['1', '2', '3']
+const vegetables = ['potato', 'tomato']
 export default {
   vegetables
 }
