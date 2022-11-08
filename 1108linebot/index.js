@@ -9,7 +9,7 @@ const bot = linebot({
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 })
 
-bot.on('message', async (event) => {
+bot.on('message', event => {
   if (event.message.type !== 'text') return
 
   if (event.message.text === '寵物資訊') {
