@@ -1,0 +1,22 @@
+body {
+  color: #0d6efd;
+}
+
+a {
+  color: green;
+}
+a:hover {
+  color: orange;
+}
+
+.card {
+  background: gray;
+}
+.card .title {
+  font-size: 50px;
+}
+.card > .content {
+  font-size: 20px;
+}
+
+/*# sourceMappingURL=style.css.map */
