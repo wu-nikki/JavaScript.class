@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+
+  </style>
+</head>
+<!-- 兩個字以上才能新增
+ . 新增欄位邊框小於兩個字時是紅色，成功是藍色，空白是黑色
+ . 已完成打勾
+可以保存資料到 localStorage
+ . 個別刪除
+ . 全部刪除
+全部標記已完成、全部未完成 -->
+
+<body>
+  <div id="app">
+    <input type="text" v-model="input" @keydown.enter="add" :style="inputStyle">
+    <input type="button" value="新增" @click="add">
+    <hr>
+
+    <input type="text" v-model="search">
+    <hr>
+
+    <input type="button" value="全刪" @click="delAll">
+
+    <input type="button" value="全標記完成" @click="markDone(true)">
+    <input type="button" value="全標記未完成" @click="markDone(flase)">
+    <hr>
+    <ul>
+      <li v-for="(item,i) infilteredItems">
+        <input type="checkbox" v-model="item.done">
+        <del v-if="item.done">{{item.name}}</del>
+        <span v-else>{{item.name}}</span>
+        <input type="button" value="x" @click="del(item.id)">
+
+      </li>
+    </ul>
+
+
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    Vue.createApp({
+      data() {
+        return {
+          items: [],
+          input: '',
+          search: '',
+          id: 0
+        }
+      },
+      methods: {
+        add() {
+          if (this.input.length < 2) return
+          this.items.push({ name: this.input, done: false, id: this.id++ })
+          this.input = ''
+        },
+        del(id) {
+          const i = this.items.findIndex(item => item.id === id)
+          this.items.splice(i, 1)
+        },
+        delAll() {
+          this.items = []
+          // this.items.splice(0, this.items.length)
+        },
+        markDone(value) {
+          // for (let i = 0; i < this.items.length; i++) {
+          //   this.items[i].done = value
+          // }
+          // for (let i in this.items) {
+          //   this.items[i].done = value
+          // }
+          this.items.map(item => {
+            item.done = value
+            return item
+          })
+        }
+
+      },
+      computed: {
+        inputStyle() {
+          if (this.input.length === 0) return { border: '5px solid black' }
+          else if (this.input.length < 2) return { border: '5px solid red' }
+          else return { border: '5px solid blue' }
+        },
+        filteredItems() {
+          return this.items.filter(item => item.name.includes(this.search))
+        }
+      },
+      watch: {
+        items: {
+          handler() {
+            localStorage.todo = JSON.stringify(this.items)
+          },
+          deep: true
+        }
+      },
+      mounted() {
+        this.items = JSON.parse(localStorage.todo || '[]')
+        if (this.items.length > 0) {
+          this.id = this.items[this.items.length - 1].id + 1
+        }
+      }
+
+
+
+
+
+    }).mount('#app')
+
+
+
+  </script>
+
+
+
+
+</body>
+
+</html>

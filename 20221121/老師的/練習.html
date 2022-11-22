@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-model="input" @keydown.enter="addItem" :style="inputStyle">
+    <input type="button" value="新增" @click="addItem">
+    <hr>
+    <input type="text" v-model="search">
+    <hr>
+    <input type="button" value="全部刪除" @click="delAll">
+    <input type="button" value="全部標記已完成" @click="markDone(true)">
+    <input type="button" value="全部標記未完成" @click="markDone(false)">
+    <hr>
+    <ul>
+      <li v-for="item in filteredItems">
+        <input type="checkbox" v-model="item.done">
+        <del v-if="item.done">{{ item.name }}</del>
+        <span v-else>{{ item.name }}</span>
+        <input type="button" value="x" @click="delItem(item.id)">
+      </li>
+    </ul>
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    Vue.createApp({
+      data() {
+        return {
+          items: [],
+          input: '',
+          search: '',
+          id: 0
+        }
+      },
+      methods: {
+        addItem() {
+          if (this.input.length < 2) return
+          this.items.push({ name: this.input, done: false, id: this.id++ })
+          this.input = ''
+        },
+        delItem(id) {
+          const i = this.items.findIndex(item => item.id === id)
+          this.items.splice(i, 1)
+        },
+        delAll() {
+          this.items = []
+        },
+        markDone(value) {
+          // for (let i = 0; i < this.items.length; i++) {
+          //   this.items[i].done = value
+          // }
+          // for (let i in this.items) {
+          //   this.items[i].done = value
+          // }
+          this.items.map(item => {
+            item.done = value
+            return item
+          })
+        }
+      },
+      computed: {
+        inputStyle() {
+          if (this.input.length === 0) return { border: '' }
+          else if (this.input.length < 2) return { border: '5px solid red' }
+          else return { border: '5px solid green' }
+        },
+        filteredItems() {
+          return this.items.filter(item => item.name.includes(this.search))
+        }
+      },
+      watch: {
+        items: {
+          handler() {
+            localStorage.todo = JSON.stringify(this.items)
+          },
+          deep: true
+        }
+      },
+      mounted() {
+        this.items = JSON.parse(localStorage.todo || '[]')
+        if (this.items.length > 0) {
+          this.id = this.items[this.items.length - 1].id + 1
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>
+
+</html>

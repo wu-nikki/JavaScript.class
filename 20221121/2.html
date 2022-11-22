@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id="app">
+    <input type="text" v-model="input" @keydown.enter="addItem" :style="inputStyle">
+    <input type="button" value="新增" @click="addItem" id="">
+
+    <hr>
+
+    <!-- 過濾 -->
+    <input type="text" v-model="search">
+    <hr>
+
+    <ul>
+      <li v-for="(item,i) in filteredItems">
+        <input type="checkbox" v-model="item.done">
+        <del v-if="item.done">{{item.name}}</del>
+        <span v-else>{{item.name}}</span>
+        <input type="button" value="x" @click="delItem(item.id)">
+
+
+      </li>
+
+    </ul>
+
+
+
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    Vue.createApp({
+      data() {
+        return {
+          items: [],
+          input: '',
+          search: '',
+          id: 0
+        }
+      },
+      methods: {
+        addItem() {
+          if (this.input.length < 3) return
+          this.items.push({ name: this.input, done: false, id: this.id++ })
+          this.input = '' //將填寫文字區清空
+        },
+        delItem(id) {
+          const i = this.items.findIndex(item => item.id === id)
+          this.items.splice(i, 1)
+          // 從第i個東西開始刪除1個
+          // this.items.splice(i, 1)
+        }
+      },
+      computed: {
+        inputStyle() {
+          if (this.input.length === 0) return { border: '' }
+          else if (this.input.length < 3) return { border: '5px solid red' }
+          else return { border: '5px solid pink' }
+        },
+        filteredItems() {
+          return this.items.filter(item => {
+            return item.name.includes(this.search)
+          })
+        }
+      },
+      watch: {
+        items: {
+          handler(newValue, oldValue) {
+            // 深層監聽無法取得 oldValue，所以 console.log 都一樣
+            console.log(newValue, oldValue);
+            localStorage.todo = JSON.stringify(newValue)
+          },
+          // 深層監聽
+          deep: true
+        }
+      },
+      mounted() {
+        const items = JSON.parse(localStorage.todo || '[]')
+        if (this.items.length > 0) {
+          this.id = this.items[this.items.length - 1].id + 1
+        }
+      }
+
+
+    }).mount('#app')
+
+
+
+  </script>
+
+
+</body>
+
+</html>
