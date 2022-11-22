@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .bg-black {
+      background: black;
+    }
+    .text-gray {
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- 顯示文字 -->
+    <h1>{{ text }}</h1>
+    <h1 v-text="text"></h1>
+    <!-- 顯示 HTML 不能用 {{ }} 模板語法 -->
+    <h1>{{ html }}</h1>
+    <!-- 顯示 HTML 要用 v-html -->
+    <h1 v-html="html"></h1>
+    <!-- 判斷式，符合條件才會出現，不符合不會出現在 DOM -->
+    <h1 v-if="number === 10">v-if 等於 10</h1>
+    <h1 v-else-if="number > 10">v-else-if 大於 10</h1>
+    <h1 v-else>v-else 小於 10</h1>
+    <!-- 判斷式，符合條件才會出現，不符合會 display: none -->
+    <h1 v-show="number === 10">v-show 等於 10</h1>
+    <ul>
+      <!-- (值, 索引) in 陣列 -->
+      <li v-for="(color, i) in colors">{{ i + 1 }} - {{ color }}</li>
+    </ul>
+    <!-- 綁定 HTML 屬性 -->
+    <a v-bind:href="link" target="_blank">職訓介紹網</a>
+    <img :src="img" width="100">
+    <!-- 綁定 style 用物件，key 為樣式，value 為值 -->
+    <h1 :style="textStyle">123456</h1>
+    <!-- 綁定 class 用物件，key 為 class 名，value 為是否套用 -->
+    <h1 :class="textClass">123456</h1>
+    <!-- v-model 綁定使用者輸入的值 -->
+    <input type="text" v-model="form.account">
+    {{ form.account }}
+    <br>
+    <input type="password" v-model="form.password">
+    <br>
+    <span v-for="jobOption in jobOptions">
+      <label :for="'job' + jobOption.value">{{ jobOption.name }}</label>
+      <input type="radio" :id="'job' + jobOption.value" :value="jobOption.value" v-model="form.job">
+    </span>
+    <br>
+    <span v-for="hobbyOption in hobbyOptions">
+      <label :for="'hobby' + hobbyOption.value">{{ hobbyOption.name }}</label>
+      <input type="checkbox" :id="'hobby' + hobbyOption.value" :value="hobbyOption.value" v-model="form.hobbies">
+    </span>
+    <select v-model="form.class">
+      <option v-for='classOption in classOptions' :value="classOption">{{ classOption }}</option>
+    </select>
+    <br>
+    <!-- v-on:事件名稱="執行的 method" -->
+    <input type="button" value="按鈕" v-on:click="notify">
+    <!-- @事件名稱="執行的 method" -->
+    <input type="button" value="按鈕" @click="notify2('ABCD')">
+    <input type="button" value="按鈕" @click="notify3('ABCD', $event)">
+    <!-- 事件修飾符 .prevent = preventDefault() -->
+    <!-- 滑鼠事件修飾符 .left .right .middle -->
+    <a href="https://google.com" @click.right.prevent="notify">Google</a>
+    <!-- 可以用 KeyboardEvent.key 當作按鍵修飾符 -->
+    <input type="text" v-model="inputText" @keydown.enter="addColor">
+    <br>
+    <input type="text" v-model="firstName">
+    <input type="text" v-model="lastName">
+    <p>{{ compFullName }}</p>
+    <p>{{ methodFullName() }}</p>
+    <!-- 設定標籤 ref 為 text 就能使用 this.$refs.text 抓到這個標籤 -->
+    <p id="text" ref="text">123</p>
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    Vue.createApp({
+      // 資料
+      data () {
+        return {
+          text: 'abc',
+          html: '<img src="https://github.com/wdaweb.png" width="100">',
+          number: 10,
+          colors: ['藍色妖姬', '紅色警戒', '黃色預警', '綠色毒刺'],
+          link: 'https://wdaweb.github.io',
+          img: 'https://github.com/wdaweb.png',
+          textStyle: {
+            backgroundColor: 'black',
+            color: 'white',
+            fontStyle: 'italic'
+          },
+          textClass: {
+            'bg-black': false,
+            'text-gray': true
+          },
+          form: {
+            account: '',
+            password: '',
+            job: '',
+            hobbies: [],
+            class: ''
+          },
+          jobOptions: [
+            { name: '學生', value: 'student' },
+            { name: '老師', value: 'teacher' },
+            { name: '寫 code 的', value: 'programmer' }
+          ],
+          hobbyOptions: [
+            { name: '聽音樂', value: 'music' },
+            { name: '看電影', value: 'movie'}
+          ],
+          classOptions: ['1113', '1114'],
+          inputText: '',
+          firstName: '',
+          lastName: ''
+        }
+      },
+      // function
+      methods: {
+        notify (event) {
+          console.log(event)
+          alert('Hi')
+        },
+        notify2 (text) {
+          alert(text)
+        },
+        notify3 (text, event) {
+          console.log(event)
+          alert(text)
+        },
+        addColor () {
+          // 取 data 資料用 this
+          this.colors.push(this.inputText)
+        },
+        methodFullName () {
+          console.log('methodFullName 更新')
+          return this.lastName + this.firstName
+        }
+      },
+      // 計算屬性，動態資料，只有相依資料更新時才會重跑 function
+      computed: {
+        compFullName () {
+          console.log('compFullName 更新')
+          return this.lastName + this.firstName
+        }
+      },
+      // 資料改變的偵測
+      watch: {
+        // 資料名當 function 名
+        firstName (newValue, oldValue) {
+          console.log(`firstName: ${oldValue} --> ${newValue}`)
+        }
+      },
+      created () {
+        // created 時 Vue 的模板還沒被放到 DOM 上，所以抓不到東西
+        // console.log(document.getElementById('text').innerText)
+      },
+      mounted () {
+        console.log(document.getElementById('text').innerText)
+        console.log(this.$refs.text.innerText)
+      }
+    }).mount('#app')
+  </script>
+</body>
+</html>
