@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-model="newItem" @keydown.enter="addItem" :style="inputStyle">
+    <input type="button" value="新增" @click="addItem">
+    <hr>
+    <input type="button" value="顯示全部" @click="filter='全部'">
+    <input type="button" value="顯示已完成" @click="filter='已完成'">
+    <input type="button" value="顯示未完成" @click="filter='未完成'">
+
+    <hr>
+    <input type="button" value="全部標記已完成" @click="markDone(true)">
+    <input type="button" value="全部標記未完成" @click="markDone(false)">
+    <hr>
+
+    <input type="button" value="刪除全部" @click="delItems('全部')">
+    <input type="button" value="刪除已完成" @click="delItems('已完成')">
+    <input type="button" value="刪除未完成" @click="delItems('未完成')">
+    <hr>
+    目前顯示{{filter}},共{{filteredItem.length}}個
+
+    <ul>
+      <li v-for="item in filteredItem" :key="item.id">
+        <input type="checkbox" v-model="item.done">
+        <span v-if="item.edit">
+          <input type="text" v-model="item.model">
+        </span>
+        <span v-else @dblclick="editItem(item.id)">
+          <del v-if="item.done">{{item.name}}</del>
+          <span v-else>{{item.name}}</span>
+        </span>
+        <input type="button" value="x" @click="delitem(item.id)">
+
+      </li>
+    </ul>
+
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    Vue.createApp({
+      // 資料
+      data() {
+        return {
+          id: 1,
+          newItem: '',
+          items: [],
+          filter: '全部'
+        }
+      },
+      // function
+      methods: {
+        addItem() {
+          if (this.newItem.length < 2)
+            return
+          this.items.push({
+            id: this.id++,
+            name: this.newItem,
+            done: false,
+            model: this.newItem,
+            edit: false
+          })
+          this.newItem = ''
+        },
+        findIdexById(id) {
+          return this.items.findIndex(item => item.id === id)
+        },
+        editItem(id) {
+          this.items[this.editItem(id)].edit = true
+        },
+        delItem(id) {
+          this.items.splice(this.findIdexById(id), 1)
+        },
+        saveEdit(id) {
+          const idx = this.findIdexById(id)
+          this.items[idx].name = this.items[idx].model
+          this.items[idx].edit = false
+        },
+        cancelEdit(id) {
+          const idx = this.findIdexById(id)
+          this.items[idx].model = this.items[idx].name
+          this.items[idx].edit = false
+        },
+        markDone(value) {
+          this.items.map(item => {
+            item.done = value
+            return item
+          })
+        },
+        delItems(value) {
+          this.items.filter(item => {
+            if (value === '全部') return false
+            else if (value === '已完成') return item.done === false
+            else return item.done === true
+          })
+        }
+
+      },
+      // 計算屬性，動態資料，只有相依資料更新時才會重跑 function
+      computed: {
+        inputStyle() {
+          return this.newItem.length === 0 ? { border: '5px solid black' } : this.newItem.length < 2 ? { border: '5px solid red' } : {
+            border: '5px solid blue'
+          }
+        }, filteredItem() {
+          return this.items.filter(item => {
+            if (this.filter === '全部') return true
+            else if (this.filter === '已完成') return item.done
+            // else if (this.filter === '已完成')  return item.done === true
+            else return !item.done
+            // else return item.done === false
+          })
+        }
+      },
+      // 資料改變的偵測
+      watch: {
+        items: {
+          handler() {
+            localStorage.newtodo = JSON.stringify(this.items)
+          },
+          deep: true
+        }
+      },
+      created() {
+        this.items = JSON.parse(localStorage.newtodo || '[]')
+        this.id = this.items.length > 0 ? this.items[this.items.length - 1].id + 1 : 1
+      },
+      // mounted() {
+
+      // }
+    }).mount('#app')
+  </script>
+</body>
+
+</html>

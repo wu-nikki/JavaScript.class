@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-model="newItem" @keydown.enter="addItem" :style="inputStyle">
+    <input type="button" value="新增" @click="addItem">
+    <hr>
+    <input type="button" value="顯示全部" @click="filter='全部'">
+    <input type="button" value="顯示已完成" @click="filter='已完成'">
+    <input type="button" value="顯示未完成" @click="filter='未完成'">
+
+    <hr>
+    <input type="button" value="全部標記已完成" @click="markDone(true)">
+    <input type="button" value="全部標記未完成" @click="markDone(false)">
+    <hr>
+
+    <input type="button" value="刪除全部" @click="delItems('全部')">
+    <input type="button" value="刪除已完成" @click="delItems('已完成')">
+    <input type="button" value="刪除未完成" @click="delItems('未完成')">
+    <hr>
+    目前顯示{{filter}},共{{filteredItem.length}}個
+
+    <ul>
+      <li v-for="item in filteredItem" :key="item.id">
+        <input type="checkbox" v-model="item.done">
+        <span v-if="item.edit">
+          <input type="text" v-model="item.model">
+        </span>
+        <span v-else @dblclick="editItem(item.id)">
+          <del v-if="item.done">{{item.name}}</del>
+          <span v-else>{{item.name}}</span>
+        </span>
+        <input type="button" value="x" @click="delitem(item.id)">
+
+      </li>
+    </ul>
+
+  </div>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    const { createApp, ref, reactive, computed, watch, onMounted } = Vue
+    createApp({
+      setup() {
+        const savedItem = JSON.parse(localStorage.newtodo || '[]')
+        // ref 接收所有型態的資料，
+        // 不會深層監聽陣列和物件，呼叫時用.value
+        // reactive 接收陣列和物件，會深層監聽，呼叫時不用.value
+        // 都不用就是不會非響應式的資料，改資料顯示的地方仍不會變，被 computed 使用不會偵測變更重新計算
+        let id = savedItem.length > 0 ? savedItem[savedItem.length - 1].id + 1 : 1
+        const newItem = ref('')
+        const items = reactive(savedItem)
+        const filter = ref('全部')
+        const addItem = () => {
+          if (newItem.value < 2) return
+          items.push({
+            id: id++,
+            name: newItem.value,
+            done: false,
+            model: newItem.value,
+            edit: false
+          })
+          newItem.value = ''
+        }
+        const findIdxById = (itemId) => {
+          return items.findIndex(item => item.id === itemId)
+        }
+        const editItem = (itemId) => {
+          items[findIdxById(itemId)].edit = true
+        }
+        const delItem = (itemId) => {
+          items.splice(findIdxById(id), 1)
+        }
+        const saveEdit = (itemId) => {
+          const idx = findIdxById(itemId)
+          items[idx].name = items[idx].model
+          items[idx].edit = false
+        }
+        const cancelEdit = (itemId) => {
+          const idx = findIdxById(itemId)
+          items[idx].model = items[idx].name
+          items[idx].edit = false
+        }
+        const markDone = (value) => {
+          items.map(item => {
+            item.done = value
+            return item
+          })
+        }
+        // splice(第幾個, 到哪, 後插入)
+        const delItems = (value) => {
+          items.splice(
+            0,
+            items.length,
+            ...items.filter(item => {
+              if (value === '全部') return false
+              else if (value === '已完成') return item.done === false
+              else return item.done === true
+            }))
+        }
+        const inputStyle = computed(() => {
+          return newItem.value.length === 0 ? { border: '5px solid black' }
+            : newItem.value.length < 2 ? { border: '5px solid red' } : { border: '5px solid blue' }
+        })
+        const filteredItem = computed(() => {
+          return items.filter(item => {
+            if (filter.value === '全部') return true
+            // else if (filter.value === '已完成')  return item.done
+            else if (filter.value === '已完成') return item.done === true
+            // else return !item.done
+            else return item.done === false
+          })
+        })
+
+        watch(items, () => {
+          localStorage.newtodo = JSON.stringify(items)
+        })
+        // 把上面html會用到的所有資料傳出去
+        return {
+          newItem,
+          filter,
+          addItem,
+          editItem,
+          delItem,
+          saveEdit,
+          cancelEdit,
+          markDone,
+          delItems,
+          inputStyle,
+          filteredItem
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>
+
+</html>

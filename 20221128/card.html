@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .card {
+      display: inline-block;
+      margin: 10px;
+      border-radius: 5px;
+      border: 1px solid black;
+      width: 100px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 用標籤屬性傳資料進元件 -->
+    <!-- 元件收到的資料型態是文字，若要傳寫數字要加: -->
+    <Card img="https://wdaweb.github.io/index_assets/img/node.jpg" title="node" :price="500"></Card>
+
+    <!--1方法: 用v-for 傳data 進去，指定欄位和值 -->
+    <Card v-for="product in products" :img="product.img" :title="product.title" :price="product.price"></Card>
+
+    <!--2方法: 用v-for 傳data 進去，自動找與props 對應的key 帶入值 -->
+    <Card v-for="product in products" v-bind="product"></Card>
+  </div>
+  <script src="https://unpkg.com/vue@3"></script>
+
+  <script type="text/x-template" id="card">
+    <div class="card">
+      <img :src="img" alt="" width="70">
+      <p>{{ title }}</p>
+      <small :style="priceStyle">{{ price }}</small>
+      <input type="button" value="按鈕" @click="alertInfo">
+    </div>
+  </script>
+  <script>
+
+    const { createApp, reactive, toRefs, toRef, computed } = Vue
+    createApp({
+      setup() {
+        const products = reactive([
+          { img: 'https://github.com/wdaweb.png', title: 'WDA', price: 50 },
+          { img: 'https://wdaweb.github.io/index_assets/img/vue.jpg', title: 'Vue', price: 100 },
+        ])
+
+
+        setTimeout(() => {
+          products.map(product => {
+            product.price += 100
+            product.title += 'abc'
+            return product
+          })
+        }, 5000)
+
+        return {
+          products
+        }
+      }
+    })
+      .component('Card', {
+        template: '#card',
+        // 定義元件接收的資料
+        props: {
+          // 指定資料型態
+          img: String,
+          // 指定資料型態 + 預設值
+          title: {
+            type: String,
+            default() {
+              return '卡片標題'
+            }
+          },
+          // 指定資料型態 + 必填 + 驗證
+          price: {
+            type: Number,
+            required: true,
+            validator(value) {
+              return value < 200
+            }
+          }
+        },
+        setup(props) {
+          // 如果要解構 props 資料，必須用 toRef 或 toRefs
+          const { title, price: price2 } = toRefs(props)
+          const img = toRef(props, 'img')
+          // 如果直接用解構 props 的資料，會導致資料失去響應性
+          const { price } = props
+
+          const alertInfo = () => {
+            // 可以直接props.資料名 取值
+            alert(props.title)
+            // toRef和 toRefs 出來的資料要加.value
+            alert(title.value)
+            alert(img.value)
+          }
+
+          const priceStyle = computed(() => {
+            // 85行，這樣當金額變成150時，字體顏色不會變黑色
+            // return price < 100 ? { color: 'red' } : {}  
+            // return props.price < 100 ? { color: 'red' } : {}
+            return price2.value < 100 ? { color: 'red' } : {}
+          })
+
+          return {
+            priceStyle,
+            alertInfo
+          }
+        },
+
+
+      })
+      .mount('#app')
+
+  </script>
+
+</body>
+
+</html>
