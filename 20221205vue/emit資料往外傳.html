@@ -11,23 +11,52 @@
 <body>
   <div id="app">
     <Btn v-for="(number, i) in numbers" :data="number" @change-data="updateNumber(i, $event)"></Btn>
-
-    <Btn :data="number" @change-data="number=$event"></Btn>
-
+    <hr>
+    <Btn :data="number" @change-data="number = $event"></Btn>
+    <hr>
+    <!-- v-model:prop名 搭配元件內的 computed -->
+    <Btnnew v-model:data="number"></Btnnew>
+    <hr>
+    <Btnnewnew></Btnnewnew>
   </div>
   <script src="https://unpkg.com/vue@3"></script>
   <script type="text/x-template" id="Btn">
-  <div>
-    {{data}}
-    <input type="button" value="點" @click="onBtnClick" >
-  </div>  
-</script>
+    <div>
+      {{ data }}
+      <input type="button" value="點" @click="onBtnClick">
+    </div>
+  </script>
+  <script type="text/x-template" id="Btnnew">
+    <div>
+      {{ num }}
+      <input type="button" value="點" @click="num = num + 100">
+    </div>
+  </script>
+  <script type="text/x-template" id="Btnnewnew">
+    <div>
+      {{ number }}
+      <input type="button" value="點" @click="number = number + 100">
+    </div>
+  </script>
   <script>
-    const { createApp, ref, reactive, toRefs, toRef } = Vue
+    const { createApp, ref, reactive, toRefs, toRef, computed, provide, inject } = Vue
     createApp({
+      // data () {
+      //   return {
+      //     number: 500
+      //   }
+      // },
+      // provide () {
+      //   return {
+      //     number: this.number
+      //   }
+      // },
       setup() {
         const number = ref(500)
         const numbers = reactive([100, 200, 300, 400])
+
+        provide('number', number)
+
         const updateNumber = (i, event) => {
           numbers[i] = event
         }
@@ -56,10 +85,42 @@
           return { onBtnClick }
         }
       })
+      .component('Btnnew', {
+        template: '#Btnnew',
+        props: ['data'],
+        // computed: {
+        //   num: {
+        //     get () {
+        //       return this.data
+        //     },
+        //     set (value) {
+        //       this.$emit('update:data', value)
+        //     }
+        //   }
+        // },
+        setup(props, { emit }) {
+          const num = computed({
+            get() {
+              return props.data
+            },
+            set(value) {
+              // 固定事件名稱，update:prop名
+              emit('update:data', value)
+            }
+          })
+          return { num }
+        }
+      })
+      .component('Btnnewnew', {
+        template: '#Btnnewnew',
+        // inject: ['number'],
+        setup() {
+          const number = inject('number')
+          return { number }
+        }
+      })
       .mount('#app')
   </script>
-
-
 </body>
 
 </html>

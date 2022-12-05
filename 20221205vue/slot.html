@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .card {
+      border: 1px solid black;
+      display: inline-block;
+      width: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <Btn></Btn>
+    <Btn>ABC</Btn>
+    <Btn>
+      <img src="https://github.com/wdaweb.png" width="10">
+    </Btn>
+    <hr>
+    <Card>
+      <p>asd</p>
+      <template v-slot:title>
+        <p>標題123</p>
+      </template>
+      <template #text>
+        <p>zxcvb</p>
+      </template>
+    </Card>
+    <hr>
+    <Cardnew>
+      <template #content="data">
+        <p>{{ data.text }}</p>
+        <input type="button" value="點我" @click="data.warn">
+      </template>
+    </Cardnew>
+  </div>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script type="text/x-template" id="Btn">
+    <button>
+      按鈕
+      <br>
+      <slot>123</slot>
+    </button>
+  </script>
+  <script type="text/x-template" id="Card">
+    <div class="card">
+      卡片
+      <slot></slot>
+      <hr>
+      title
+      <slot name="title"></slot>
+      <hr>
+      text
+      <slot name="text"></slot>
+    </div>
+  </script>
+  <script type="text/x-template" id="CardNew">
+    <div class="card">
+      <slot name="content" :text="text" :warn="warn"></slot>
+    </div>
+  </script>
+  <script>
+    const { createApp, ref } = Vue
+    createApp()
+      .component('Btn', {
+        template: '#Btn'
+      })
+      .component('Card', {
+        template: '#Card'
+      })
+      .component('Cardnew', {
+        template: '#CardNew',
+        setup() {
+          const text = ref('aaa')
+          const warn = () => {
+            alert(text.value)
+          }
+          return { text, warn }
+        }
+      })
+      .mount('#app')
+  </script>
+</body>
+
+</html>

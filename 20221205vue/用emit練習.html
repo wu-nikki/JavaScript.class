@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .card {
+      border: 1px solid black;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    總共 {{ totalGood }} 個讚
+    <br>
+    <Card v-for="card in cards" :img="card.img" :text="card.text" v-model:good="card.good"></Card>
+  </div>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script type="text/x-template" id="Card">
+    <div class="card">
+      <img :src="img" width="100">
+      <p>{{ text }}</p>
+      <input type="button" :value="g ? '收回讚' : '讚'" @click="g = !g">
+    </div>
+  </script>
+  <script>
+    const { createApp, computed, reactive } = Vue
+    createApp({
+      setup() {
+        const cards = reactive([
+          { img: 'https://github.com/rogeraabbccdd.png', text: 'rogeraabbccdd', good: true },
+          { img: 'https://github.com/vuejs.png', text: 'Vue.js', good: true },
+          { img: 'https://github.com/vitejs.png', text: 'Vite.js', good: true }
+        ])
+        const totalGood = computed(() => {
+          // return cards.filter(card => {
+          //   return card.good === true
+          // }).length
+          return cards.filter(card => card.good).length
+        })
+        return { cards, totalGood }
+      }
+    })
+      .component('Card', {
+        template: '#Card',
+        props: ['img', 'text', 'good'],
+        setup(props, { emit }) {
+          const g = computed({
+            get() {
+              return props.good
+            },
+            set(value) {
+              emit('update:good', value)
+            }
+          })
+          return { g }
+        }
+      })
+      .mount('#app')
+  </script>
+</body>
+
+</html>
