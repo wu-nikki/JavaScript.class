@@ -9,7 +9,9 @@
   "dependencies": {
     "@mdi/font": "7.0.96",
     "pinia": "^2.0.28",
+    "pinia-plugin-persistedstate": "^3.0.1",
     "roboto-fontface": "*",
+    "vite-plugin-pwa": "^0.14.0",
     "vue": "^3.2.38",
     "vue-router": "^4.1.6",
     "vuetify": "^3.0.0",

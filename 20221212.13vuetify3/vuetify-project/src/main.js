@@ -13,6 +13,14 @@ import { createApp } from 'vue'
 // Plugins
 import { registerPlugins } from '@/plugins'
 
+// PWA
+import { registerSW } from 'virtual:pwa-register'
+
+registerSW({
+  onNeedRefresh () {},
+  onOfflineReady () {}
+})
+
 const app = createApp(App)
 
 registerPlugins(app)
