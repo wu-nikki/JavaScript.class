@@ -3,6 +3,9 @@ import mongoose from 'mongoose'
 import express from 'express'
 import users from './users.js'
 
+// .env
+// DB_URL=mongodb+srv://user:<password>@cluster0.xxxxxxxx.mongodb.net/20221219
+
 // 連線資料庫
 mongoose.connect(process.env.DB_URL, () => {
   console.log('資料庫連線成功')
