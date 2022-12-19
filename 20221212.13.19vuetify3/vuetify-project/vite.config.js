@@ -2,6 +2,7 @@
 import vue from '@vitejs/plugin-vue'
 import vuetify from 'vite-plugin-vuetify'
 import { VitePWA } from 'vite-plugin-pwa'
+import ViteRadar from 'vite-plugin-radar'
 
 // Utilities
 import { defineConfig } from 'vite'
@@ -15,6 +16,12 @@ export default defineConfig({
     // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({
       autoImport: true
+    }),
+    ViteRadar({
+      // Google Analytics tag injection
+      analytics: {
+        id: 'G-FYDXN1PP6B'
+      }
     }),
     VitePWA({
       // 設定快取自動更新

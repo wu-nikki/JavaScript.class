@@ -16,6 +16,8 @@ import { registerPlugins } from '@/plugins'
 // PWA
 import { registerSW } from 'virtual:pwa-register'
 
+import './main.sass'
+
 registerSW({
   onNeedRefresh () {},
   onOfflineReady () {}
