@@ -16,7 +16,8 @@ const schema = new Schema({
     // enum 限制欄位的值只能是陣列裡面的其中一個
     enum: {
       values: ['皮件', '鞋', '飾品', '衣服', '遊戲', '3C'],
-      message: '無此分類'
+      // {VALUE}會自動寫傳入的值
+      message: '找不到{VALUE}分類'
 
     }
   }
