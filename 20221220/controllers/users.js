@@ -62,3 +62,16 @@ export const addCart = async (req, res) => {
     }
   }
 }
+//
+export const getUser = async (req, res) => {
+  try {
+    const result = await users.findById(req.params.id, '-password').populate('cart.p_id')
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    if (error.name === 'CastError') {
+      res.status(400).json({ success: false, message: 'ID 格式錯誤' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
+  }
+}

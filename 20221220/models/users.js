@@ -1,4 +1,4 @@
-import { Schema, model, ObjectId } from 'mongoose'
+import { Schema, model, ObjectId, Error } from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcrypt'
 
@@ -61,13 +61,13 @@ schema.pre('save', function (next) {
 })
 // 資料更新
 schema.pre('findOneAndUpdate', function (next) {
-// this._update 代表正要保存的資料
+  // this._update 代表正要保存的資料
   const user = this._update
   if (user.password) {
     if (user.password.length >= 4 && user.password.length <= 20) {
       user.password = bcrypt.hashSync(user.password, 10)
     } else {
-    // 產生一個 Mongoose 的驗證錯誤
+      // 產生一個 Mongoose 的驗證錯誤
       const error = new Error.ValidationError(null)
       error.addError('password', new Error.ValidatorError({ message: '密碼長度錯誤' }))
       next(error)
