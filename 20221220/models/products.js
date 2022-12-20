@@ -14,7 +14,11 @@ const schema = new Schema({
     type: String,
     require: [true, '缺少商品分類'],
     // enum 限制欄位的值只能是陣列裡面的其中一個
-    enum: ['皮件', '鞋', '飾品', '衣服', '遊戲', '3C']
+    enum: {
+      values: ['皮件', '鞋', '飾品', '衣服', '遊戲', '3C'],
+      message: '無此分類'
+
+    }
   }
 }, { versionKey: false })
 
