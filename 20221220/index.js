@@ -4,6 +4,7 @@ import express from 'express'
 import mongoSanitize from 'express-mongo-sanitize'
 
 import productsRoute from './routes/products.js'
+import usersRoute from './routes/users.js'
 
 mongoose.connect(process.env.DB_URL)
 mongoose.set('sanitizeFilter', true)
@@ -18,6 +19,7 @@ app.use((_, req, res, next) => {
 app.use(mongoSanitize())
 
 app.use('/products', productsRoute)
+app.use('/users', usersRoute)
 
 app.all('*', (req, res) => {
   res.status(404).json({ success: false, message: '找不到' })
