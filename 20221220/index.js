@@ -2,6 +2,7 @@ import 'dotenv/config'
 import mongoose from 'mongoose'
 import express from 'express'
 import mongoSanitize from 'express-mongo-sanitize'
+import cors from 'cors'
 
 import productsRoute from './routes/products.js'
 import usersRoute from './routes/users.js'
@@ -11,6 +12,7 @@ mongoose.set('sanitizeFilter', true)
 
 const app = express()
 
+app.use(cors())
 app.use(express.json())
 app.use((_, req, res, next) => {
   res.status(400).json({ success: false, message: '資料格式錯誤' })
