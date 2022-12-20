@@ -7,6 +7,9 @@ import cors from 'cors'
 import productsRoute from './routes/products.js'
 import usersRoute from './routes/users.js'
 
+// .env
+// DB_URL=mongodb+srv://nikki851205:Nn0922335584@cluster0.nvicjnu.mongodb.net/20221220
+
 mongoose.connect(process.env.DB_URL)
 mongoose.set('sanitizeFilter', true)
 
