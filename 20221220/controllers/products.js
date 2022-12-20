@@ -1,5 +1,6 @@
 import products from '../models/products.js'
-
+// util=> nodejs內建的
+import util from 'util'
 export const createProduct = async (req, res) => {
   try {
     const result = await products.create(req.body)
@@ -53,12 +54,35 @@ export const getProducts = async (req, res) => {
         query.$and.push({ price: { $lte: lte } })
       }
     }
+    // 分類過濾
+    if (req.query.category) {
+      query.$and.push({ category: req.query.category })
+      // query.$and.push({ category: { $eq: req.query.category } })
+    }
+
+    // 關鍵字查詢
+    if (req.query.keywords) {
+      const keywords = req.query.keywords.split(' ').filter(keyword => keyword.length > 0)
+      const names = []
+      for (const keyword of keywords) {
+        // i 不分大小寫
+        names.push(new RegExp(keyword, 'i'))
+      }
+      // $in 包含
+      query.$and.push({ name: { $in: names } })
+    }
+
     // 2是空白縮排
     //  {
     //    "price": {
-    console.log(JSON.stringify(query, null, 2))
 
-    const result = await products.find(query)
+    // console.log(JSON.stringify(query, null, 2))
+
+    // 用這個關鍵字查詢才會跑出來
+    console.log(util.inspect(query, true, null))
+    // .sort({ 欄位名: 1 正序 -1 倒敘})
+    // $and不能是空陣列，所以加判斷
+    const result = await products.find(query.$and.length > 0 ? query : {}).sort({ price: 1 })
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
