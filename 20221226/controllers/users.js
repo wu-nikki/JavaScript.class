@@ -40,3 +40,14 @@ export const getCurrentUser = (req, res) => {
     }
   })
 }
+
+export const editUserAvstar = async (req, res) => {
+  try {
+    console.log(req.file)
+    req.user.avatar = req.file.path
+    await req.user.save()
+    res.status(200).json({ success: true, message: '', result: req.file.path })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
