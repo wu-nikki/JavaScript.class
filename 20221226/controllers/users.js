@@ -51,3 +51,13 @@ export const editUserAvstar = async (req, res) => {
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
+
+export const logoutUser = async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(token => token !== req.token)
+    await req.user.save()
+    res.status(200).json({ success: true, message: '' })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
