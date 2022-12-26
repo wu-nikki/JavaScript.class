@@ -1,4 +1,5 @@
 import passport from 'passport'
+import jsonwebtoken from 'jsonwebtoken'
 
 export const login = (req, res, next) => {
   // 使用 login 驗證方式
@@ -14,6 +15,27 @@ export const login = (req, res, next) => {
     // 把查詢到的 user 放進 req 裡面給之後的處理使用
     req.user = user
     // 繼續下一個 middleware
+    next()
+  })(req, res, next)
+}
+
+export const jwt = (req, res, next) => {
+  passport.authenticate('jwt', { session: false }, (error, data, info) => {
+    if (error || !data) {
+    //  如果是JWT解譯錯誤，可能是過期，格式不對
+      if (info instanceof jsonwebtoken.JsonWebTokenError) {
+        if (info.name === 'TokenExpiredError') {
+          res.status(400).json({ success: false, message: 'JWT 過期' })
+        } else {
+          res.status(400).json({ success: false, message: 'JWT 錯誤' })
+        }
+      } else {
+        res.status(400).json({ success: false, message: info.message })
+      }
+      return
+    }
+    req.user = data.user
+    req.token = data.token
     next()
   })(req, res, next)
 }

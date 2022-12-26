@@ -17,8 +17,10 @@ export const createUser = async (req, res) => {
     }
   }
 }
+
 export const loginUser = async (req, res) => {
   try {
+    // jwt.sign(保存的資料, SECRET, 設定)
     const token = jwt.sign({ _id: req.user._id.toString() }, process.env.JWT_SECRET, { expiresIn: '7 days' })
     req.user.tokens.push(token)
     await req.user.save()
@@ -26,4 +28,15 @@ export const loginUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
+}
+
+export const getCurrentUser = (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: '',
+    result: {
+      account: req.user.account,
+      avatar: req.user.avatar
+    }
+  })
 }
