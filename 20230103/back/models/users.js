@@ -67,6 +67,7 @@ schema.pre('save', function (next) {
     }
   }next()
 })
+
 schema.pre('findOneAndUpdate', function (next) {
   const user = this._update
   if (user.password) {
