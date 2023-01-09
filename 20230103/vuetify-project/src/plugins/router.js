@@ -17,10 +17,19 @@ const router = createRouter({
           meta: {
             title: '購物網'
           }
-        }, {
+        },
+        {
           path: 'register',
           name: 'register',
           component: () => import('@/views/front/RegisterView.vue'),
+          meta: {
+            title: '購物網|註冊'
+          }
+        },
+        {
+          path: 'login',
+          name: 'login',
+          component: () => import('@/views/front/LoginView.vue'),
           meta: {
             title: '購物網|註冊'
           }

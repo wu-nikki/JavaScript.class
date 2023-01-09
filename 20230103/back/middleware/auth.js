@@ -21,7 +21,7 @@ export const login = (req, res, next) => {
 export const jwt = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (error, data, info) => {
     if (error || !data) {
-      // 如果是JWT錯誤
+      // 如果是 JWT 錯誤
       if (info instanceof jsonwebtoken.JsonWebTokenError) {
         if (info.name === 'TokenExpiredError') {
           return res.status(401).json({ success: false, message: 'JWT 過期' })
