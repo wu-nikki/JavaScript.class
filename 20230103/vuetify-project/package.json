@@ -9,7 +9,10 @@
   "dependencies": {
     "@mdi/font": "7.0.96",
     "axios": "^1.2.2",
+    "i": "^0.3.7",
+    "npm": "^9.2.0",
     "pinia": "^2.0.28",
+    "pinia-plugin-persistedstate": "^3.0.2",
     "roboto-fontface": "*",
     "sweetalert2": "^11.6.16",
     "validator": "^13.7.0",

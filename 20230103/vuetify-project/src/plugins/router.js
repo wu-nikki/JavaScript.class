@@ -35,7 +35,24 @@ const router = createRouter({
           }
         }
       ]
-    }, {
+    },
+    // 後台管理
+    {
+      path: '/admin',
+      component: () => import('@/layouts/AdminLayout.vue'),
+      children: [
+        {
+          path: '',
+          name: 'admin-home',
+          component: () => import('@/views/admin/HomeView.vue'),
+          meta: {
+            title: '購物網 | 管理'
+          }
+        }
+      ]
+    },
+    //
+    {
       path: '/404',
       name: '404',
       component: NotFoundView,

@@ -73,7 +73,7 @@ export const getUser = async (req, res) => {
       result: {
         account: req.user.account,
         email: req.user.email,
-        cart: req.user.cart,
+        cart: req.user.cart.length,
         role: req.user.role
       }
     })
