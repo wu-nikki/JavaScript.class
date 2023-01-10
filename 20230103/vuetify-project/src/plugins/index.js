@@ -10,6 +10,8 @@ import vuetify from './vuetify'
 import router from './router'
 import pinia from './pinia'
 import { useUserStore } from '@/stores/user'
+// 管理員圖片管理的套件 npm i vue3-img-input
+import VImageInput from 'vue3-img-input'
 
 export async function registerPlugins (app) {
   loadFonts()
@@ -18,4 +20,5 @@ export async function registerPlugins (app) {
   useUserStore().getUser()
   app.use(router)
   app.use(vuetify)
+  app.component('VImageInput', VImageInput)
 }
