@@ -7,6 +7,19 @@
       v-btn(color="success" @click="openDialog(-1)") 新增商品
     v-col(cols="12")
       v-table
+        thead
+          tr
+            th 圖片
+            th 名稱
+            th 管理
+        tbody
+          tr(v-for="(product,idx) in products" :key="product._id")
+            td
+              v-img(:src="product.image" :aspect-ratio="1" :width="200")
+            td {{ product.name }}
+            td
+            v-btn(color="primary" icon="mdi-pencil" variant="text" @click="openDialog(idx)")
+
   v-dialog(v-model="form.dialog" persistent)
     v-form(v-model="form.valid" @submit.prevent="submit")
       v-card
@@ -68,6 +81,7 @@ const form = reactive({
 })
 
 const openDialog = (idx) => {
+  // -1 代表目前要新增的東西不在陣列裡面
   if (idx === -1) {
     form._id = ''
     form.name = ''
@@ -135,5 +149,19 @@ const submit = async () => {
   }
   form.loading = false
 }
+
+// 立即執行
+(async () => {
+  try {
+    const { data } = await apiAuth.get('/products/all')
+    products.push(...data.result)
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: '失敗',
+      text: error?.response?.data?.message || '發生錯誤'
+    })
+  }
+})()
 
 </script>
