@@ -57,6 +57,16 @@ const router = createRouter({
             login: true,
             admin: true
           }
+        },
+        {
+          path: 'products',
+          name: 'admin-products',
+          component: () => import('@/views/admin/ProductsView.vue'),
+          meta: {
+            title: '購物網 | 商品管理',
+            login: true,
+            admin: true
+          }
         }
       ]
     },
