@@ -9,10 +9,13 @@ import { loadFonts } from './webfontloader'
 import vuetify from './vuetify'
 import router from './router'
 import pinia from './pinia'
+import { useUserStore } from '@/stores/user'
 
-export function registerPlugins (app) {
+export async function registerPlugins (app) {
   loadFonts()
-  app.use(vuetify)
-  app.use(router)
   app.use(pinia)
+  // 初始化pinia之後抓使用者資料後 註冊路由 再跳頁
+  useUserStore().getUser()
+  app.use(router)
+  app.use(vuetify)
 }

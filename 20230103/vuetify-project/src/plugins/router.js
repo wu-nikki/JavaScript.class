@@ -83,7 +83,8 @@ router.afterEach((to, from) => {
 })
 // 阻擋亂入
 router.beforeEach(async (to, from, next) => {
-  console.log('beforeEach')
+  // console.log('beforeEach')
+
   const user = useUserStore()
   // 登入後，如果又點了註冊或是登入 把他導回首頁
   if (user.isLogin && (to.path === '/register' || to.path === '/login')) {
@@ -92,14 +93,8 @@ router.beforeEach(async (to, from, next) => {
   } else if (to.meta.login && !user.isLogin) {
     next('/login')
     // 如果去要管理的頁面 ，要先判斷是不是管理員
-  } else if (to.meta.admin) {
-    await user.getUser()
-    // 如果不是就回首頁
-    if (!user.isAdmin) {
-      next('/')
-    } else {
-      next()
-    }
+  } else if (to.meta.admin && !user.isAdmin) {
+    next('/')
   } else {
     next()
   }

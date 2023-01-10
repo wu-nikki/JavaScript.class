@@ -13,8 +13,11 @@ import { createApp } from 'vue'
 // Plugins
 import { registerPlugins } from '@/plugins'
 
-const app = createApp(App)
+//
+(async () => {
+  const app = createApp(App)
 
-registerPlugins(app)
+  await registerPlugins(app)
 
-app.mount('#app')
+  app.mount('#app')
+})()
