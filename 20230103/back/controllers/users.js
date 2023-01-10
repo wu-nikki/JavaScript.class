@@ -22,7 +22,7 @@ export const register = async (req, res) => {
 // 登入
 export const login = async (req, res) => {
   try {
-    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
+    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1 s' })
     req.user.tokens.push(token)
     await req.user.save()
     res.status(200).json({

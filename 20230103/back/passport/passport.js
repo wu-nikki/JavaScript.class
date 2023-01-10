@@ -30,8 +30,28 @@ passport.use('login', new passportLocal.Strategy({
 passport.use('jwt', new passportJWT.Strategy({
   jwtFromRequest: passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET,
-  passReqToCallback: true
+  passReqToCallback: true,
+  // 忽略過期檢查，沒忽略會直接跳到後台的auth的錯誤
+  ignoreExpiration: true
 }, async (req, payload, done) => {
+  // 檢查有沒有過期
+  // payload 解譯出來的過期時間單位是秒，JS 的 Date.now() 單位是毫秒，所以要 *1000
+  const expired = payload.exp * 1000 < Date.now()
+  /*
+    http://localhost:4000/users/me?a=b
+    app.use('/users', userRoute)
+    router.get('/me')
+    console.log(req.originalUrl) ---> /users/me?a=b
+    console.log(req.baseUrl) ---> /users
+    console.log(req.path) ---> /me
+    console.log(req.baseUrl + req.path) ---> /users/me
+  */
+
+  if (expired && req.originalUrl !== '/users/extend' && req.originalUrl !== '/users/logout') {
+    return done(null, false, { message: '登入逾時' })
+  }
+
+  // 取得使用者資料
   const token = req.headers.authorization.split(' ')[1]
   try {
     const user = await users.findOne({ _id: payload._id, tokens: token })
