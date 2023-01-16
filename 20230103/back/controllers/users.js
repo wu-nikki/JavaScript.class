@@ -91,7 +91,7 @@ export const editCart = async (req, res) => {
     const idx = req.user.cart.findIndex(cart => cart.p_id.toString() === req.body.p_id)
     if (idx > -1) {
       // 如果有，檢查新數量是多少
-      const quantity = req.user.cart[idx].quantity + req.body.quantity
+      const quantity = req.user.cart[idx].quantity + parseInt(req.body.quantity)
       if (quantity <= 0) {
         // 如果新數量小於 0，從購物車陣列移除
         req.user.cart.splice(idx, 1)
@@ -110,7 +110,7 @@ export const editCart = async (req, res) => {
       // 如果存在，加入購物車陣列
       req.user.cart.push({
         p_id: req.body.p_id,
-        quantity: req.body.quantity
+        quantity: parseInt(req.body.quantity)
       })
     }
     await req.user.save()
