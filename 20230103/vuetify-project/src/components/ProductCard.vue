@@ -1,12 +1,15 @@
 <template lang="pug">
 v-card.card-product
     v-img(:src="image" cover height="200px")
-    v-card-title {{ name }}
+    v-card-title
+      router-link.text-decoration-none.text-primary(:to="'/products/' + _id") {{ name }}
     v-card-subtitle ${{ price }}
-    v-card-text {{ description }}
+    v-card-text
+      p.pre {{ description }}
     v-card-actions
       v-btn(color="primary" prepend-icon="mdi-cart") 加入購物車
 </template>
+<!-- pre標籤會改字體 -->
 <script setup>
 defineProps(
   {

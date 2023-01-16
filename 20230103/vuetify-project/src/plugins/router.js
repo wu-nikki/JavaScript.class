@@ -40,6 +40,16 @@ const router = createRouter({
             login: false,
             admin: false
           }
+        },
+        {
+          path: 'products/:id',
+          name: 'product',
+          component: () => import('@/views/front/ProductView.vue'),
+          meta: {
+            title: '購物網|商品',
+            login: false,
+            admin: false
+          }
         }
       ]
     },
