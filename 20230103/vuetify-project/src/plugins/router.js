@@ -97,6 +97,16 @@ const router = createRouter({
             login: true,
             admin: true
           }
+        },
+        {
+          path: 'orders',
+          name: 'admin-orders',
+          component: () => import('@/views/admin/OrdersView.vue'),
+          meta: {
+            title: '購物網 | 訂單管理',
+            login: true,
+            admin: true
+          }
         }
       ]
     },

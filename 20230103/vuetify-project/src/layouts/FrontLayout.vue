@@ -1,6 +1,7 @@
 <template lang="pug">
 v-app-bar(color="primary")
-  v-app-bar-title 購物網
+  v-app-bar-title
+    a(:href="/#/") 購物網
   v-spacer
   v-btn(v-if="!isLogin" prepend-icon="mdi-account-plus" variant="text" to="/register") 註冊
   v-btn(v-if="!isLogin" prepend-icon="mdi-login" variant="text" to="/login") 登入
