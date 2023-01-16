@@ -53,10 +53,20 @@ const router = createRouter({
         },
         {
           path: 'cart',
-          name: 'product',
+          name: 'cart',
           component: () => import('@/views/front/CartView.vue'),
           meta: {
             title: '購物網 | 購物車',
+            login: true,
+            admin: false
+          }
+        },
+        {
+          path: 'orders',
+          name: 'orders',
+          component: () => import('@/views/front/OrdersView.vue'),
+          meta: {
+            title: '購物網 | 訂單',
             login: true,
             admin: false
           }

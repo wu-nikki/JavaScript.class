@@ -110,6 +110,24 @@ export const useUserStore = defineStore('user', () => {
       })
     }
   }
+  // 結帳
+  const checkout = async () => {
+    try {
+      await apiAuth.post('/orders')
+      cart.value = 0
+      Swal.fire({
+        icon: 'success',
+        title: '成功',
+        text: '結帳成功'
+      })
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: '失敗',
+        text: error?.response?.data?.message || '發生錯誤'
+      })
+    }
+  }
 
   return {
     token,
@@ -123,7 +141,8 @@ export const useUserStore = defineStore('user', () => {
     isLogin,
     isAdmin,
     avatar,
-    editCart
+    editCart,
+    checkout
   }
 }, {
   persist: {

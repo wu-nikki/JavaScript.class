@@ -1,6 +1,6 @@
 <template lang="pug">
 #cart
-  v-row
+    v-row
       v-col(cols="12")
         h1.text-center 購物車
       v-divider
@@ -15,7 +15,7 @@
               th 小計
               th 操作
           tbody
-            tr(v-for="(product, idx) in cart" :key="product._id" :class="{'bg-red':!product.p_id.sell}")
+            tr(v-for="(product, idx) in cart" :key="product._id" :class="{'bg-red': !product.p_id.sell}")
               td
                 v-img(:aspect-ratio="1" :width="200" :src="product.p_id.image")
               td {{ product.p_id.name }}
@@ -27,14 +27,12 @@
               td {{ product.quantity * product.p_id.price }}
               td
                 v-btn(color="red" @click="updateCart(idx, product.quantity*-1)") 刪除
-          tr(v-if="cart.length === 0")
-            td.text-center(colspan="6") 沒有商品
-
+            tr(v-if="cart.length === 0")
+              td.text-center(colspan="6") 沒有商品
       v-divider
       v-col.text-center(cols="12")
-        p 總金額${{ totalPrice }}
-        v-btn(color="green" :disabled="!canCheckout") 結帳
-
+        p 總金額 {{ totalPrice }}
+        v-btn(color="green" :disabled="!canCheckout" @click="onCheckoutBtnClick") 結帳
 </template>
 
 <script setup>
@@ -42,9 +40,12 @@ import { reactive, computed } from 'vue'
 import Swal from 'sweetalert2'
 import { apiAuth } from '@/plugins/axios'
 import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const user = useUserStore()
-const { editCart } = user
+const { editCart, checkout } = user
 
 const cart = reactive([])
 
@@ -56,6 +57,11 @@ const updateCart = async (idx, quantity) => {
   }
 }
 
+const onCheckoutBtnClick = async () => {
+  await checkout()
+  router.push('/orders')
+}
+
 const totalPrice = computed(() => {
   return cart.reduce((total, current) => {
     return total + (current.p_id.price * current.quantity)
@@ -63,7 +69,6 @@ const totalPrice = computed(() => {
 })
 
 const canCheckout = computed(() => {
-  // 購物車數量>0 且沒有沒上架的東西才能結帳
   return cart.length > 0 && !cart.some(product => {
     return !product.p_id.sell
   })
@@ -82,3 +87,5 @@ const canCheckout = computed(() => {
   }
 })()
 </script>
+
+// 購物車數量>0 且沒有沒上架的東西才能結帳

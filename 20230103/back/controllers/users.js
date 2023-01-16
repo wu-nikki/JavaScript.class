@@ -1,7 +1,6 @@
 import users from '../models/users.js'
-import jwt from 'jsonwebtoken'
-
 import products from '../models/products.js'
+import jwt from 'jsonwebtoken'
 
 export const register = async (req, res) => {
   try {
@@ -13,7 +12,7 @@ export const register = async (req, res) => {
     res.status(200).json({ success: true, message: '' })
   } catch (error) {
     if (error.name === 'ValidationError') {
-      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0].message] })
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
     } else if (error.name === 'MongoServerError' && error.code === 11000) {
       res.status(400).json({ success: false, message: '帳號重複' })
     } else {
@@ -24,7 +23,7 @@ export const register = async (req, res) => {
 // 登入
 export const login = async (req, res) => {
   try {
-    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1 s' })
+    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
     req.user.tokens.push(token)
     await req.user.save()
     res.status(200).json({
@@ -39,7 +38,6 @@ export const login = async (req, res) => {
       }
     })
   } catch (error) {
-    // console.log(error)
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
@@ -92,6 +90,7 @@ export const editCart = async (req, res) => {
     if (idx > -1) {
       // 如果有，檢查新數量是多少
       const quantity = req.user.cart[idx].quantity + parseInt(req.body.quantity)
+      console.log(req.body.quantity)
       if (quantity <= 0) {
         // 如果新數量小於 0，從購物車陣列移除
         req.user.cart.splice(idx, 1)

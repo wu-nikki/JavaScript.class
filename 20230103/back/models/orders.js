@@ -1,7 +1,7 @@
 import { Schema, model, ObjectId } from 'mongoose'
 
 const orderSchema = new Schema({
-  product: {
+  p_id: {
     type: ObjectId,
     ref: 'products',
     required: [true, '缺少商品']
