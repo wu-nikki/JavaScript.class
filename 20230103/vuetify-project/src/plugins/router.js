@@ -50,6 +50,16 @@ const router = createRouter({
             login: false,
             admin: false
           }
+        },
+        {
+          path: 'cart',
+          name: 'product',
+          component: () => import('@/views/front/CartView.vue'),
+          meta: {
+            title: '購物網 | 購物車',
+            login: true,
+            admin: false
+          }
         }
       ]
     },

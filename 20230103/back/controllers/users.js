@@ -34,7 +34,7 @@ export const login = async (req, res) => {
         token,
         account: req.user.account,
         email: req.user.email,
-        cart: req.user.cart.length,
+        cart: req.user.cart.reduce((total, current) => total + current.quantity, 0),
         role: req.user.role
       }
     })
@@ -75,7 +75,7 @@ export const getUser = async (req, res) => {
       result: {
         account: req.user.account,
         email: req.user.email,
-        cart: req.user.cart.length,
+        cart: req.user.cart.reduce((total, current) => total + current.quantity, 0),
         role: req.user.role
       }
     })
@@ -114,7 +114,7 @@ export const editCart = async (req, res) => {
       })
     }
     await req.user.save()
-    res.status(200).json({ success: true, message: '', result: req.user.cart.length })
+    res.status(200).json({ success: true, message: '', result: req.user.cart.reduce((total, current) => total + current.quantity, 0) })
   } catch (error) {
     if (error.name === 'ValidationError') {
       res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })

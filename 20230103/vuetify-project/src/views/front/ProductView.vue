@@ -11,7 +11,7 @@
       p ${{ product.price }}
       p.pre {{ product.description }}
     v-col(cols="12")
-      v-form(@submit.prevent="editCart({ _id: product._id, quantity })")
+      v-form(v-model="valid" @submit.prevent="submitCart")
         v-text-field(v-model.number="quantity" type="number" label="數量" :rules="[rules.required, rules.number]")
         v-btn(type="submit" color="primary") 加入購物車
 
@@ -34,6 +34,7 @@ const router = useRouter()
 const user = useUserStore()
 const { editCart } = user
 
+const valid = ref(false)
 const quantity = ref(0)
 
 const rules = {
@@ -41,7 +42,7 @@ const rules = {
     return !!value || '欄位必填'
   },
   number (value) {
-    return value >= 0
+    return value > 0 || '數量錯誤'
   }
 }
 
@@ -53,7 +54,12 @@ const product = reactive({
   image: '',
   sell: true,
   category: ''
-});
+})
+
+const submitCart = () => {
+  if (!valid.value) return
+  editCart({ _id: product._id, quantity: quantity.value })
+}
 
 (async () => {
   try {

@@ -97,6 +97,11 @@ export const useUserStore = defineStore('user', () => {
     try {
       const { data } = await apiAuth.post('/users/cart', { p_id: _id, quantity })
       cart.value = data.result
+      Swal.fire({
+        icon: 'success',
+        title: '成功',
+        text: '加入購物車成功'
+      })
     } catch (error) {
       Swal.fire({
         icon: 'error',
