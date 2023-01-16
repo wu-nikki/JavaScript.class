@@ -83,6 +83,29 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  // 購物車
+  const editCart = async ({ _id, quantity }) => {
+    if (token.value.length === 0) {
+      Swal.fire({
+        icon: 'error',
+        title: '失敗',
+        text: '請先登入'
+      })
+      router.push('/login')
+      return
+    }
+    try {
+      const { data } = await apiAuth.post('/users/cart', { p_id: _id, quantity })
+      cart.value = data.result
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: '失敗',
+        text: error?.response?.data?.message || '發生錯誤'
+      })
+    }
+  }
+
   return {
     token,
     account,
@@ -94,7 +117,8 @@ export const useUserStore = defineStore('user', () => {
     getUser,
     isLogin,
     isAdmin,
-    avatar
+    avatar,
+    editCart
   }
 }, {
   persist: {

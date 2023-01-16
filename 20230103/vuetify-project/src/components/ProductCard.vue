@@ -7,10 +7,14 @@ v-card.card-product
     v-card-text
       p.pre {{ description }}
     v-card-actions
-      v-btn(color="primary" prepend-icon="mdi-cart") 加入購物車
+      v-btn(color="primary" prepend-icon="mdi-cart" @click="editCart({_id, quantity: 1})") 加入購物車
+
 </template>
 <!-- pre標籤會改字體 -->
 <script setup>
+
+import { useUserStore } from '@/stores/user'
+
 defineProps(
   {
     /* eslint-disable */
@@ -45,4 +49,8 @@ defineProps(
     }
   }
 )
+
+const user = useUserStore()
+const { editCart } = user
+
 </script>
