@@ -42,6 +42,10 @@ app.use('/products', productRoute)
 
 app.use('/orders', orderRoute)
 
+app.get('/', (req, res) => {
+  res.status(200).json({ success: true, message: '' })
+})
+
 app.all('*', (req, res) => {
   res.status(404).json({ success: false, message: '找不到' })
 })
